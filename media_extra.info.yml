@@ -1,0 +1,7 @@
+name: 'Media Extra'
+type: module
+description: 'Extra additions to core media module.'
+package: Media
+core: 8.x
+dependencies:
+- drupal:media

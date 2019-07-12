@@ -1,0 +1,7 @@
+entity.media_extra.settings:
+  path: '/admin/config/media/media-extra-settings'
+  defaults:
+    _form: '\Drupal\media_extra\Form\SettingsForm'
+    _title: 'Media Extra Settings'
+  requirements:
+    _permission: 'administer media'

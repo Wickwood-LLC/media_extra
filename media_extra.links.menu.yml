@@ -1,0 +1,5 @@
+entity.media_extra.settings:
+  title: 'Media Extra Settings'
+  description: 'Manage media extra settings.'
+  route_name: entity.media_extra.settings
+  parent: system.admin_config_media

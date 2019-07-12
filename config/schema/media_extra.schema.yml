@@ -1,0 +1,13 @@
+media_extra.settings:
+  type: config_object
+  label: 'Media Extra settings'
+  mapping:
+    allowed_image_styles_for_static_image:
+      type: sequence
+      label: 'Allowed image styles for static image'
+      sequence:
+        type: string
+
+field.formatter.settings.static_image:
+  type: field.formatter.settings.media_thumbnail
+  label: 'Static image field display format settings'
