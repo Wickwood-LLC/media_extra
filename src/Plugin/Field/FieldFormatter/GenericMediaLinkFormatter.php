@@ -9,6 +9,11 @@ use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\media\MediaInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\file\Plugin\Field\FieldFormatter\FileFormatterBase;
+use Drupal\media\Plugin\media\Source\OEmbedInterface;
+use Drupal\media\Plugin\media\Source\File as FileSource;
+use Drupal\Core\Url;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'generic_media_link' formatter.
@@ -21,7 +26,7 @@ use Drupal\file\Plugin\Field\FieldFormatter\FileFormatterBase;
  *   }
  * )
  */
-class GenericMediaLinkFormatter extends FileFormatterBase {
+class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFactoryPluginInterface {
 
   /**
    * The renderer service.
@@ -29,6 +34,47 @@ class GenericMediaLinkFormatter extends FileFormatterBase {
    * @var \Drupal\Core\Render\RendererInterface
    */
   protected $renderer;
+
+  /**
+   * Constructs an MediaThumbnailFormatter object.
+   *
+   * @param string $plugin_id
+   *   The plugin_id for the formatter.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
+   *   The definition of the field to which the formatter is associated.
+   * @param array $settings
+   *   The formatter settings.
+   * @param string $label
+   *   The formatter label display setting.
+   * @param string $view_mode
+   *   The view mode.
+   * @param array $third_party_settings
+   *   Any third party settings settings.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer service.
+   */
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, RendererInterface $renderer) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
+    $this->renderer = $renderer;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['label'],
+      $configuration['view_mode'],
+      $configuration['third_party_settings'],
+      $container->get('renderer')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -101,29 +147,47 @@ class GenericMediaLinkFormatter extends FileFormatterBase {
     /** @var \Drupal\media\MediaInterface[] $media_items */
     foreach ($media_items as $delta => $media) {
       $media_type  = $media->getEntityType();
-      //$source_field = $media_type->getSource()->getConfiguration()['source_field'];
-      $source_field = $media->getSource()->getConfiguration()['source_field'];
-      $file = $media->get($source_field)->entity;
-      $item = $file->_referringItem;
-      $elements[$delta] = [
-        '#theme' => 'file_link',
-        '#file' => $file,
-        '#description' => !empty($custom_link_text) ? $custom_link_text : $media->getName(),
-        '#cache' => [
-          'tags' => $file->getCacheTags(),
-        ],
-      ];
-      // Pass field item attributes to the theme function.
-      if (isset($item->_attributes)) {
-        $elements[$delta] += ['#attributes' => []];
-        $elements[$delta]['#attributes'] += $item->_attributes;
-        // Unset field item attributes since they have been included in the
-        // formatter output and should not be rendered in the field template.
-        unset($item->_attributes);
+      $source = $media->getSource();
+      if ($source instanceof OEmbedInterface) {
+        if (!empty($custom_link_text)) {
+          $link_text = $custom_link_text;
+        }
+        else {
+          $link_text = $source->getMetadata($media, 'default_name');
+        }
+        $link_url = $source->getMetadata($media, 'url');
+        if (empty($link_url)) {
+          $link_url = $source->getSourceFieldValue($media);
+        }
+
+        $elements[$delta] = [
+          '#type' => 'link',
+          '#url' => Url::fromUri($link_url),
+          '#title' => $link_text,
+          '#options' => [
+            'attributes' => [
+              'class' => [$source->getMetadata($media, 'provider_name')]
+            ]
+          ]
+        ];
+      }
+      else if ($source instanceof FileSource) {
+        $source_field = $media->getSource()->getConfiguration()['source_field'];
+        $file = $media->get($source_field)->entity;
+        if ($file) {
+          $elements[$delta] = [
+            '#theme' => 'file_link',
+            '#file' => $file,
+            '#description' => !empty($custom_link_text) ? $custom_link_text : $media->getName(),
+            '#cache' => [
+              'tags' => $file->getCacheTags(),
+            ],
+          ];
+        }
       }
 
       // Add cacheability of each item in the field.
-      //$this->renderer->addCacheableDependency($elements[$delta], $media);
+      $this->renderer->addCacheableDependency($elements[$delta], $media);
     }
 
     return $elements;
