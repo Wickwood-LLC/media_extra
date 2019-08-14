@@ -93,6 +93,7 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
   public static function defaultSettings() {
     return [
       'link_text' => '',
+      'use_url_as_link_text' => FALSE,
     ] + parent::defaultSettings();
   }
 
@@ -101,6 +102,14 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $element = parent::settingsForm($form, $form_state);
+
+    // $media = $form_state->get('entity');
+
+    $element['use_url_as_link_text'] = [
+      '#title' => t('Use URL as link text'),
+      '#type' => 'checkbox',
+      '#default_value' => $this->getSetting('use_url_as_link_text'),
+    ];
 
     $element['link_text'] = [
       '#title' => t('Link text'),
@@ -143,21 +152,28 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
     }
 
     $custom_link_text = $this->getSetting('link_text');
+    $use_url_as_link_text = $this->getSetting('use_url_as_link_text');
 
     /** @var \Drupal\media\MediaInterface[] $media_items */
     foreach ($media_items as $delta => $media) {
       $media_type  = $media->getEntityType();
       $source = $media->getSource();
       if ($source instanceof OEmbedInterface) {
-        if (!empty($custom_link_text)) {
-          $link_text = $custom_link_text;
-        }
-        else {
-          $link_text = $source->getMetadata($media, 'default_name');
-        }
         $link_url = $source->getMetadata($media, 'url');
         if (empty($link_url)) {
           $link_url = $source->getSourceFieldValue($media);
+        }
+
+        if ($use_url_as_link_text) {
+          $link_text = $link_url;
+        }
+        else {
+          if (!empty($custom_link_text)) {
+            $link_text = $custom_link_text;
+          }
+          else {
+            $link_text = $source->getMetadata($media, 'default_name');
+          }
         }
 
         $elements[$delta] = [
@@ -174,11 +190,18 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
       else if ($source instanceof FileSource) {
         $source_field = $media->getSource()->getConfiguration()['source_field'];
         $file = $media->get($source_field)->entity;
+
+        if ($use_url_as_link_text) {
+          $link_text = $file->createFileUrl(FALSE);
+        }
+        else {
+          $link_text = !empty($custom_link_text) ? $custom_link_text : $media->getName();
+        }
         if ($file) {
           $elements[$delta] = [
             '#theme' => 'file_link',
             '#file' => $file,
-            '#description' => !empty($custom_link_text) ? $custom_link_text : $media->getName(),
+            '#description' => $link_text,
             '#cache' => [
               'tags' => $file->getCacheTags(),
             ],
