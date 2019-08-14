@@ -106,6 +106,10 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
     if ($build_info['form_id'] == 'entity_embed_dialog') {
       $parent_path = 'attributes[data-entity-embed-display-settings]';
     }
+    else if ($build_info['form_id'] == 'entity_view_display_edit_form') {
+      // TODO: Support entity view display edit form.
+      $parent_path = '';
+    }
 
     // $media = $form_state->get('entity');
 
