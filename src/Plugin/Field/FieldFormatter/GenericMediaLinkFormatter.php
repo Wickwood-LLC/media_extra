@@ -106,7 +106,7 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
     // $media = $form_state->get('entity');
 
     $element['use_url_as_link_text'] = [
-      '#title' => t('Use URL as link text'),
+      '#title' => t('Use URL itself as link text'),
       '#type' => 'checkbox',
       '#default_value' => $this->getSetting('use_url_as_link_text'),
     ];
