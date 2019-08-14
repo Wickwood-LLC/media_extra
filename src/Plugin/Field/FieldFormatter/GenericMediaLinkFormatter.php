@@ -102,6 +102,10 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $element = parent::settingsForm($form, $form_state);
+    $build_info = $form_state->getBuildInfo();
+    if ($build_info['form_id'] == 'entity_embed_dialog') {
+      $parent_path = 'attributes[data-entity-embed-display-settings]';
+    }
 
     // $media = $form_state->get('entity');
 
@@ -116,6 +120,11 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
       '#type' => 'textfield',
       '#default_value' => $this->getSetting('link_text'),
       '#description' => t('Enter custom link to use. If empty media name will be used as text.'),
+      '#states' => [
+        'visible' => [
+          ':input[name="' . $parent_path . '[use_url_as_link_text]"]' => ['checked' => FALSE],
+        ],
+      ],
     ];
 
     return $element;
