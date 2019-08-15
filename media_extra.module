@@ -1,0 +1,24 @@
+<?php
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\ContentEntityBase;
+
+/**
+ * Implements hook_entity_presave().
+ */
+function media_extra_entity_presave(EntityInterface $entity) {
+  if ($entity instanceof ContentEntityBase) {
+    foreach (\Drupal::entityManager()->getFieldDefinitions($entity->getEntityTypeId(), $entity->bundle()) as $field_name => $field_definition) {
+      if (!empty($field_definition->getTargetBundle())) {
+        if ($field_definition->getType() == 'image') {
+          $images = $entity->get($field_name);
+          foreach ($images as $key => $image) {
+            $entity_manager = \Drupal::entityTypeManager();
+            if (empty($image->alt)) {
+              $images[$key]->alt = preg_replace('/\.[^.\s]+$/', '', $image->entity->getFilename());
+            }
+          }
+        }
+      }
+    }
+  }
+}
