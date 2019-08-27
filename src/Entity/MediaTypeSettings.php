@@ -49,7 +49,7 @@ class MediaTypeSettings extends ConfigEntityBase {
       ->load($id);
     if (!$entity) {
       $entity = \Drupal::entityTypeManager()->getStorage('media_type_settings')
-       ->create(['id' => $load, 'name_optional' => FALSE, 'name_description' => '']);
+       ->create(['id' => $id, 'name_optional' => FALSE, 'name_description' => '']);
     }
     return $entity;
   }
