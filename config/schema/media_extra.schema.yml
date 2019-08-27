@@ -11,3 +11,18 @@ media_extra.settings:
 field.formatter.settings.static_image:
   type: field.formatter.settings.media_thumbnail
   label: 'Static image field display format settings'
+
+media_extra.media_type_settings.*:
+  type: config_entity
+  label: 'Media Type Settings'
+  mapping:
+    id:
+      type: string
+      label: 'Media type'
+    name_optional:
+      type: boolean
+      label: 'Name optional'
+    name_description:
+      type: string
+      label: 'Name field description'
+

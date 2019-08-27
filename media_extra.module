@@ -1,6 +1,11 @@
 <?php
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\ContentEntityBase;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\media_extra\Entity\MediaTypeSettings;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\Entity\BaseFieldOverride;
 
 /**
  * Implements hook_entity_presave().
@@ -21,4 +26,96 @@ function media_extra_entity_presave(EntityInterface $entity) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function media_extra_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_state->getFormObject() instanceof EntityFormInterface) {
+    $entity_type = $form_state->getFormObject()->getEntity()->getEntityTypeId();
+    $current_operation = $form_state->getFormObject()->getOperation();
+
+    $entity = $form_state->getFormObject()->getEntity();
+    $is_bundle = is_subclass_of($entity,
+      'Drupal\Core\Config\Entity\ConfigEntityBundleBase');
+
+    if ($entity_type == 'media_type' && $current_operation == 'edit') {
+      $media_type = $entity->id();
+
+      $media_type_settings = MediaTypeSettings::load($media_type);
+
+      $form_state->set('media_extra_media_type_settings', $media_type_settings);
+      // Wrap everything in a fieldset.
+      $form['media_extra'] = [
+        '#type' => 'details',
+        '#title' => t('Media Extra Settings'),
+        '#collapsed' => FALSE,
+        '#collapsible' => TRUE,
+        '#group' => 'additional_settings',
+        '#attributes' => ['class' => ['media-extra-hole-settings-form']],
+      ];
+
+      $form['media_extra']['name_optional'] = [
+        '#type' => 'checkbox',
+        '#title' => t('Make "Name" field optional'),
+        '#description' => t('Enabling this setting will make "Name" field optional to fill in add/edit forms.'),
+        '#default_value' => $media_type_settings->name_optional,
+      ];
+
+      $form['media_extra']['name_description'] = [
+        '#type' => 'textfield',
+        '#title' => t('Name field description'),
+        '#description' => t('By default there is no description for "Name" field. You may set a custom description here.'),
+        '#default_value' => $media_type_settings->name_description,
+      ];
+
+      // media_extra_entity_bundle_field_info() will be get called through original submit handler.
+      // So we need to save MediaTypeSettings before original submit hanler get called.
+      // Thus prepend custom submit handler to array.
+      array_unshift($form['actions']['submit']['#submit'], 'media_extra_media_type_form_submit');
+    }
+  }
+}
+
+function media_extra_media_type_form_submit($form, FormStateInterface $form_state) {
+  $media_type_settings = $form_state->get('media_extra_media_type_settings');
+  $media_type_settings->name_optional = $form_state->getValue('name_optional');
+  $media_type_settings->name_description = $form_state->getValue('name_description');
+  $media_type_settings->save();
+}
+
+// /**
+//  * Implements hook_entity_base_field_info_alter()
+//  */
+// function media_extra_entity_base_field_info_alter(&$fields, \Drupal\Core\Entity\EntityTypeInterface $entity_type) {
+
+//   // Alter the mymodule_text field to use a custom class.
+//   if ($entity_type->id() == 'media' && !empty($fields['name'])) {
+
+//     $fields['name']->setRequired(FALSE);
+//   }
+// }
+
+/**
+ * Implements hook_entity_bundle_field_info().
+ */
+function media_extra_entity_bundle_field_info(EntityTypeInterface $entity_type, $bundle, array $base_field_definitions) {
+  $fields = [];
+
+  // Whether the hook implementation was called for our group type.
+  if ($entity_type->id() == 'media' && !empty($base_field_definitions['name'])) {
+    $media_type_settings = MediaTypeSettings::load($bundle);
+    if (!$media_type_settings->isNew()) {
+      // Create a base field override with custom "Required" constraint.
+      $field = BaseFieldOverride::createFromBaseFieldDefinition($base_field_definitions['name'], $bundle);
+      $field->setRequired(!$media_type_settings->name_optional);
+      if (!empty($media_type_settings->name_description)) {
+        $field->setDescription($media_type_settings->name_description);
+      }
+      $fields['name'] = $field;
+    }
+  }
+
+  return $fields;
 }
