@@ -83,7 +83,7 @@ class SettingsForm extends ConfigFormBase {
 
     $form['allowed_image_styles_for_responsive_image'] = [
       '#type' => 'checkboxes',
-      '#title' => $this->t('Allowed image styles for Responsive Media Image formatter'),
+      '#title' => $this->t('Allowed responsive image styles for Responsive Media Image formatter'),
       '#default_value' => $config->get('allowed_image_styles_for_responsive_image') ?: [],
       '#options' => $responsive_image_options,
     ];
