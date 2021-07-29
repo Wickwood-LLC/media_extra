@@ -70,6 +70,10 @@ class StaticImageFormatter extends MediaThumbnailFormatter {
     $config = \Drupal::config('media_extra.settings');
     $allowed_image_styles = $config->get('allowed_image_styles_for_static_image');
     $element['image_style']['#options'] = array_intersect_key($element['image_style']['#options'], array_filter($allowed_image_styles));
+    $element['image_style']['#description'] = [
+      '#markup' => $this->linkGenerator->generate($this->t('Configure allowed Image Styles'), new Url('entity.media_extra.settings')),
+      '#access' => $this->currentUser->hasPermission('administer media'),
+    ];
     return $element;
   }
 

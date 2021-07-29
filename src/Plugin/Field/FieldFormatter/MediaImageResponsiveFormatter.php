@@ -126,8 +126,8 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
     $element['image_style']['#title'] = $this->t('Responsive image style');
     // description as well.
     $element['image_style']['#description'] = [
-      '#markup' => $this->linkGenerator->generate($this->t('Configure Responsive Image Styles'), new Url('entity.responsive_image_style.collection')),
-      '#access' => $this->currentUser->hasPermission('administer responsive image styles'),
+      '#markup' => $this->linkGenerator->generate($this->t('Configure allowed Responsive Image Styles'), new Url('entity.media_extra.settings')),
+      '#access' => $this->currentUser->hasPermission('administer media'),
     ];
     return $element;
   }
