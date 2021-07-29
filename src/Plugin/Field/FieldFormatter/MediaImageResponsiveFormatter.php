@@ -106,6 +106,8 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $element = parent::settingsForm($form, $form_state);
 
+    $config = \Drupal::config('media_extra.settings');
+
     $responsive_image_options = [];
     $responsive_image_styles = $this->responsiveImageStyleStorage->loadMultiple();
     if ($responsive_image_styles && !empty($responsive_image_styles)) {
@@ -115,8 +117,11 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
         }
       }
     }
+
+    $allowed_responsive_image_styles = $config->get('allowed_image_styles_for_responsive_image');
+
     // Replace regular image styles list with responsive image styles.
-    $element['image_style']['#options'] = $responsive_image_options;
+    $element['image_style']['#options'] = array_intersect_key($responsive_image_options, array_filter($allowed_responsive_image_styles));;
     // Change title accordingly.
     $element['image_style']['#title'] = $this->t('Responsive image style');
     // description as well.

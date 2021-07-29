@@ -1,1 +1,2 @@
-allowed_image_styles_for_static_image: ''
+allowed_image_styles_for_static_image: []
+allowed_image_styles_for_responsive_image: []

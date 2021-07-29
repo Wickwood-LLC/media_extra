@@ -4,7 +4,12 @@ media_extra.settings:
   mapping:
     allowed_image_styles_for_static_image:
       type: sequence
-      label: 'Allowed image styles for static image'
+      label: 'Allowed image styles for Media Image formatter'
+      sequence:
+        type: string
+    allowed_image_styles_for_responsive_image:
+      type: sequence
+      label: 'Allowed image styles for Responsive Media Image formatter'
       sequence:
         type: string
 
