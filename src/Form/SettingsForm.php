@@ -35,7 +35,7 @@ class SettingsForm extends ConfigFormBase {
 
     $form['allowed_image_styles_for_static_image'] = [
       '#type' => 'checkboxes',
-      '#title' => $this->t('Allowed image styles for static image'),
+      '#title' => $this->t('Allowed image styles for Media Image formatter'),
       '#default_value' => $config->get('allowed_image_styles_for_static_image'),
       '#options' => image_style_options(FALSE),
     ];

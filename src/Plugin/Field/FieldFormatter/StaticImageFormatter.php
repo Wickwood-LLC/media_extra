@@ -19,7 +19,7 @@ use Drupal\Core\Field\FieldDefinitionInterface;
  *
  * @FieldFormatter(
  *   id = "static_image",
- *   label = @Translation("Static image"),
+ *   label = @Translation("Media Image"),
  *   field_types = {
  *     "entity_reference"
  *   }

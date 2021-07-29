@@ -19,7 +19,7 @@ use Drupal\Core\Url;
  *
  * @FieldFormatter(
  *   id = "media_image_responsive",
- *   label = @Translation("Media Image Responsive"),
+ *   label = @Translation("Responsive Media Image"),
  *   field_types = {
  *     "entity_reference"
  *   }
