@@ -12,6 +12,9 @@ media_extra.settings:
       label: 'Allowed image styles for Responsive Media Image formatter'
       sequence:
         type: string
+    linkit_profile:
+      type: string
+      label: 'Linkit profile'
 
 field.formatter.settings.static_image:
   type: field.formatter.settings.media_thumbnail

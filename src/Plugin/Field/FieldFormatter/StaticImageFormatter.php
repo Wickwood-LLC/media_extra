@@ -13,6 +13,8 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\media\MediaInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Utility\LinkGeneratorInterface;
+use Drupal\Core\Url;
 
 /**
  * Plugin implementation of the 'media_thumbnail' formatter.
@@ -33,6 +35,14 @@ class StaticImageFormatter extends MediaThumbnailFormatter {
    * @var \Drupal\Core\Render\RendererInterface
    */
   protected $renderer;
+
+  /**
+   * The link generator.
+   *
+   * @var \Drupal\Core\Utility\LinkGeneratorInterface
+   */
+  protected $linkGenerator;
+
 
   /**
    * Constructs an MediaThumbnailFormatter object.
@@ -57,9 +67,40 @@ class StaticImageFormatter extends MediaThumbnailFormatter {
    *   The image style entity storage handler.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer service.
+   * @param \Drupal\Core\Utility\LinkGeneratorInterface $link_generator
+   *   The link generator service.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, ImageStyleStorageInterface $image_style_storage, RendererInterface $renderer) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, ImageStyleStorageInterface $image_style_storage, RendererInterface $renderer, LinkGeneratorInterface $link_generator) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $current_user, $image_style_storage, $renderer);
+    $this->linkGenerator = $link_generator;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['label'],
+      $configuration['view_mode'],
+      $configuration['third_party_settings'],
+      $container->get('current_user'),
+      $container->get('entity_type.manager')->getStorage('image_style'),
+      $container->get('renderer'),
+      $container->get('link_generator')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return [
+      'linkit' => '',
+    ] + parent::defaultSettings();
   }
 
   /**
@@ -74,7 +115,37 @@ class StaticImageFormatter extends MediaThumbnailFormatter {
       '#markup' => $this->linkGenerator->generate($this->t('Configure allowed Image Styles'), new Url('entity.media_extra.settings')),
       '#access' => $this->currentUser->hasPermission('administer media'),
     ];
+
+    unset($element['image_link']);
+
+    if (\Drupal::service('module_handler')->moduleExists('linkit')) {
+      $element['linkit'] = [
+        '#title' => $this->t('Link'),
+        '#type' => 'linkit',
+        '#default_value' => $this->getSetting('linkit'),
+        '#description' => $this->t('Start typing to find content or paste a URL.'),
+        '#autocomplete_route_name' => 'linkit.autocomplete',
+        '#autocomplete_route_parameters' => [
+          'linkit_profile_id' => $config->get('linkit_profile'),
+        ],
+      ];
+    }
+
     return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getMediaThumbnailUrl(MediaInterface $media, EntityInterface $entity) {
+    $url = NULL;
+    if (\Drupal::service('module_handler')->moduleExists('linkit')) {
+      $href = $this->getSetting('linkit');
+      if (!empty($href)) {
+        $url = Url::fromUserInput($href);
+      }
+    }
+    return $url;
   }
 
 }

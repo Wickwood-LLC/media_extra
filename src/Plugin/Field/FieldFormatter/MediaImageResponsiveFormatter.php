@@ -13,6 +13,8 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Utility\LinkGeneratorInterface;
 use Drupal\Core\Url;
+use Drupal\media\MediaInterface;
+use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Plugin implementation of the 'media_image_responsive' formatter.
@@ -103,6 +105,15 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
   /**
    * {@inheritdoc}
    */
+  public static function defaultSettings() {
+    return [
+      'linkit' => '',
+    ] + parent::defaultSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $element = parent::settingsForm($form, $form_state);
 
@@ -129,6 +140,21 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
       '#markup' => $this->linkGenerator->generate($this->t('Configure allowed Responsive Image Styles'), new Url('entity.media_extra.settings')),
       '#access' => $this->currentUser->hasPermission('administer media'),
     ];
+
+    unset($element['image_link']);
+
+    if (\Drupal::service('module_handler')->moduleExists('linkit')) {
+      $element['linkit'] = [
+        '#title' => $this->t('Link'),
+        '#type' => 'linkit',
+        '#default_value' => $this->getSetting('linkit'),
+        '#description' => $this->t('Start typing to find content or paste a URL.'),
+        '#autocomplete_route_name' => 'linkit.autocomplete',
+        '#autocomplete_route_parameters' => [
+          'linkit_profile_id' => $config->get('linkit_profile'),
+        ],
+      ];
+    }
     return $element;
   }
 
@@ -179,6 +205,20 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
       }
     }
     return $changed;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getMediaThumbnailUrl(MediaInterface $media, EntityInterface $entity) {
+    $url = NULL;
+    if (\Drupal::service('module_handler')->moduleExists('linkit')) {
+      $href = $this->getSetting('linkit');
+      if (!empty($href)) {
+        $url = Url::fromUserInput($href);
+      }
+    }
+    return $url;
   }
 
 }

@@ -88,6 +88,30 @@ class SettingsForm extends ConfigFormBase {
       '#options' => $responsive_image_options,
     ];
 
+
+    if (\Drupal::service('module_handler')->moduleExists('linkit')) {
+      $linkitProfileStorage = \Drupal::service('entity.manager')->getStorage('linkit_profile');
+
+      $all_profiles = $linkitProfileStorage->loadMultiple();
+
+      $options = array();
+      foreach ($all_profiles as $profile) {
+        $options[$profile->id()] = $profile->label();
+      }
+
+      $form['linkit_profile'] = array(
+        '#type' => 'select',
+        '#title' => t('Linkit profile'),
+        '#options' => $options,
+        '#default_value' => $config->get('linkit_profile') ?: '',
+        '#empty_option' => $this->t('- Select profile -'),
+        '#description' => $this->t('Select the linkit profile you wish to use with the Media Image and Responsive Media Image formatters.'),
+        '#element_validate' => array(
+          array($this, 'validateLinkitProfileSelection'),
+        ),
+      );
+    }
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -103,6 +127,7 @@ class SettingsForm extends ConfigFormBase {
     // Set the submitted editor CSS setting
     ->set('allowed_image_styles_for_static_image', $form_state->getValue('allowed_image_styles_for_static_image'))
     ->set('allowed_image_styles_for_responsive_image', $form_state->getValue('allowed_image_styles_for_responsive_image'))
+    ->set('linkit_profile', $form_state->getValue('linkit_profile'))
     ->save();
 
     parent::submitForm($form, $form_state);
