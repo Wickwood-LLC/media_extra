@@ -153,9 +153,44 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
         '#autocomplete_route_parameters' => [
           'linkit_profile_id' => $config->get('linkit_profile'),
         ],
+        '#element_validate' => [[get_class($this), 'validateLink']],
       ];
     }
     return $element;
+  }
+
+  /**
+   * Validate the entered link.
+   */
+  public static function validateLink($element,  FormStateInterface $form_state) {
+    $url = NULL;
+    $href = $form_state->getValue($element['#parents']);
+
+    if (empty($href)) {
+      return;
+    }
+
+    try {
+      $url = Url::fromUserInput($href);
+    }
+    catch (\InvalidArgumentException $e) {
+      try {
+        $url = Url::fromUri($href);
+      }
+      catch (\InvalidArgumentException $e) {
+      }
+    }
+    if ($url) {
+      try {
+        $url->toString();
+      }
+      catch (\InvalidArgumentException $e) {
+        $url = NULL;
+      }
+    }
+    if (!$url) {
+      $form_state->setError($element, t('Please enter a valid path or external URL.'));
+    }
   }
 
   /**
@@ -215,7 +250,12 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
     if (\Drupal::service('module_handler')->moduleExists('linkit')) {
       $href = $this->getSetting('linkit');
       if (!empty($href)) {
-        $url = Url::fromUserInput($href);
+        try {
+          $url = Url::fromUserInput($href);
+        }
+        catch (\InvalidArgumentException $e) {
+          $url = Url::fromUri($href);
+        }
       }
     }
     return $url;
