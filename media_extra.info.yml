@@ -2,6 +2,6 @@ name: 'Media Extra'
 type: module
 description: 'Extra additions to core media module.'
 package: Media
-core: 8.x
+core_version_requirement: ^8 || ^9
 dependencies:
 - drupal:media
