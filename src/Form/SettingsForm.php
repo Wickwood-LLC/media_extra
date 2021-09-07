@@ -90,7 +90,7 @@ class SettingsForm extends ConfigFormBase {
 
 
     if (\Drupal::service('module_handler')->moduleExists('linkit')) {
-      $linkitProfileStorage = \Drupal::service('entity.manager')->getStorage('linkit_profile');
+      $linkitProfileStorage = \Drupal::entityTypeManager()->getStorage('linkit_profile');
 
       $all_profiles = $linkitProfileStorage->loadMultiple();
 
