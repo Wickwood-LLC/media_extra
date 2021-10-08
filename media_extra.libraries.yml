@@ -1,0 +1,6 @@
+base:
+  version: VERSION
+  css:
+    # Adjust the weights to load these early.
+    component:
+      css/components/rotate.module.css: { weight: -10 }

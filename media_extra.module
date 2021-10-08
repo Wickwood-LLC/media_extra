@@ -2,6 +2,9 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\ContentEntityBase;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\editor\Entity\Editor;
+
 /**
  * Implements hook_entity_presave().
  */
@@ -21,4 +24,55 @@ function media_extra_entity_presave(EntityInterface $entity) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function media_extra_form_entity_embed_dialog_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_state->get('step') == 'embed') {
+    $entity_element = $form_state->get('entity_element');
+    /** @var \Drupal\editor\EditorInterface $editor */
+    $editor = $form_state->get('editor');
+
+    if ($editor->getFilterFormat()->filters('me_filter_rotate')->status) {
+      $form['attributes']['data-rotate'] = [
+        '#title' => t('Rotate'),
+        '#type' => 'radios',
+        '#options' => [
+          '' => t('None'),
+          'left' => t('Left'),
+          'right' => t('Right'),
+        ],
+        '#default_value' => isset($entity_element['data-rotate']) ? $entity_element['data-rotate'] : '',
+        '#wrapper_attributes' => ['class' => ['container-inline']],
+        '#attributes' => ['class' => ['container-inline']],
+      ];
+      $form['attributes']['data-rotate-caption'] = [
+        '#title' => t('Rotate Caption'),
+        '#type' => 'checkbox',
+        '#default_value' => isset($entity_element['data-rotate-caption']) ? $entity_element['data-rotate-caption'] : FALSE,
+        // '#wrapper_attributes' => ['class' => ['container-inline']],
+        // '#attributes' => ['class' => ['container-inline']],
+      ];
+    }
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ *
+ * @see template_preprocess_maintenance_page()
+ * @see \Drupal\Core\EventSubscriber\ActiveLinkResponseFilter
+ */
+function media_extra_page_attachments(array &$page) {
+  // Ensure the same CSS is loaded in template_preprocess_maintenance_page().
+  $page['#attached']['library'][] = 'media_extra/base';
+}
+
+/**
+ * Implements hook_ckeditor_css_alter().
+ */
+function media_extra_ckeditor_css_alter(array &$css, Editor $editor) {
+  $css[] = drupal_get_path('module', 'media_extra') . '/css/components/rotate.module.css';
 }

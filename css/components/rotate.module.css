@@ -1,0 +1,22 @@
+/**
+ * Rotation classes for block level elements (images, videos, blockquotes, etc.)
+ */
+.rotate-left {
+  transform: rotate(-7deg);
+  padding: 6% 10% 6% 6%;
+  float: left; 
+}
+.rotate-right {
+  transform: rotate(7deg);
+  padding: 6% 10% 6% 6%;
+  float: right;
+}
+
+.align-center.rotate-left {
+  display: block;
+}
+
+.align-center.rotate-right {
+  display: block;
+}
+
