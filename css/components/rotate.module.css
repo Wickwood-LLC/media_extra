@@ -3,11 +3,15 @@
  */
 .rotate-left {
   transform: rotate(-7deg);
-  padding: 6% 10% 6% 6%;
+  margin: 6% 10% 6% 6%;
+  shape-outside: polygon(3% 18%, 87% 2%, 93% 76%, 97% 100%, 0% 100%) margin-box;
+  shape-margin: 1em;
 }
 .rotate-right {
   transform: rotate(7deg);
-  padding: 6% 10% 6% 6%;
+  margin: 6% 10% 6% 6%;
+  shape-outside: polygon(9% 0%, 93% 17%, 86% 100%, 0% 100%, 0% 97%) margin-box;
+  shape-margin: 1em;
 }
 
 .align-center.rotate-left {
@@ -18,5 +22,12 @@
 .align-center.rotate-right {
   display: block;
   clear: both;
+}
+
+.align-left {
+  float: left;margin
+}
+.align-right {
+  float: right;
 }
 
