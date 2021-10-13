@@ -2,32 +2,74 @@
  * Rotation classes for block level elements (images, videos, blockquotes, etc.)
  */
 .rotate-left {
-  transform: rotate(-7deg);
+  -webkit-transform: rotate(-7deg);
+          transform: rotate(-7deg);
   margin: 6% 10% 6% 6%;
-  shape-outside: polygon(3% 18%, 87% 2%, 93% 76%, 97% 100%, 0% 100%) margin-box;
-  shape-margin: 1em;
-}
-.rotate-right {
-  transform: rotate(7deg);
-  margin: 6% 10% 6% 6%;
-  shape-outside: polygon(9% 0%, 93% 17%, 86% 100%, 0% 100%, 0% 97%) margin-box;
   shape-margin: 1em;
 }
 
-.align-center.rotate-left {
+.rotate-right {
+  -webkit-transform: rotate(7deg);
+          transform: rotate(7deg);
+  margin: 6% 10% 6% 6%;
+  shape-margin: 1em;
+}
+
+[data-entity-embed-display-settings*="3x4"].rotate-left,
+.rotate-left [data-entity-embed-display-settings*="3x4"] {
+  shape-outside: polygon(4% 12%, 77% 5%, 89% 89%, 17% 96%) margin-box;
+}
+
+[data-entity-embed-display-settings*="3x4"].rotate-right,
+.rotate-right [data-entity-embed-display-settings*="3x4"] {
+  shape-outside: polygon(13% 1%, 97% 9%, 83% 99%, -1% 91%) margin-box;
+}
+
+[data-entity-embed-display-settings*="4x3"].rotate-left,
+.rotate-left [data-entity-embed-display-settings*="4x3"] {
+  shape-outside: polygon(3% 15%, 85% 2%, 93% 85%, 11% 98%) margin-box;
+}
+
+[data-entity-embed-display-settings*="4x3"].rotate-right,
+.rotate-right [data-entity-embed-display-settings*="4x3"] {
+  shape-outside: polygon(11% 2%, 93% 15%, 85% 98%, 3% 85%) margin-box;
+}
+
+[data-entity-embed-display-settings*="9x16"].rotate-left,
+.rotate-left [data-entity-embed-display-settings*="9x16"] {
+  shape-outside: polygon(2% 10%, 75% 4%, 91% 90%, 19% 96%) margin-box;
+}
+
+[data-entity-embed-display-settings*="9x16"].rotate-right,
+.rotate-right [data-entity-embed-display-settings*="9x16"] {
+  shape-outside: polygon(19% 4%, 91% 10%, 75% 96%, 2% 91%) margin-box;
+}
+
+[data-entity-embed-display-settings*="16x9"].rotate-left,
+.rotate-left [data-entity-embed-display-settings*="16x9"] {
+  shape-outside: polygon(4% 18%, 86% 2%, 92% 82%, 10% 98%) margin-box;
+}
+
+[data-entity-embed-display-settings*="16x9"].rotate-right,
+.rotate-right [data-entity-embed-display-settings*="16x9"] {
+  shape-outside: polygon(10% 2%, 92% 18%, 86% 98%, 3% 82%) margin-box;
+}
+
+.align-center .rotate-right {
   display: block;
   clear: both;
 }
 
-.align-center.rotate-right {
+.align-center .rotate-left {
   display: block;
   clear: both;
 }
 
 .align-left {
-  float: left;margin
+  float: left;
 }
+
 .align-right {
   float: right;
 }
-
+/*# sourceMappingURL=rotate.module.css.map */
