@@ -5,6 +5,7 @@ namespace Drupal\media_extra\Plugin\Filter;
 use Drupal\Component\Utility\Html;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
+use Drupal\embed\DomHelperTrait;
 
 /**
  * Provides a filter to align elements.
@@ -17,6 +18,7 @@ use Drupal\filter\Plugin\FilterBase;
  * )
  */
 class FilterRotate extends FilterBase {
+  use DomHelperTrait;
 
   /**
    * {@inheritdoc}
@@ -43,6 +45,11 @@ class FilterRotate extends FilterBase {
 
           if (!empty($rotate_caption)) {
             $classes[] = 'rotate-caption';
+          }
+
+          $context = $this->getNodeAttributesAsArray($node);
+          if (isset($context['data-entity-embed-display-settings']['image_style'])) {
+            $classes[] = 'image-style--' . str_replace('_', '-', $context['data-entity-embed-display-settings']['image_style']);
           }
           $node->setAttribute('class', implode(' ', $classes));
         }
