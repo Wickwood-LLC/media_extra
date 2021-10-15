@@ -12,47 +12,39 @@
   shape-margin: 1em;
 }
 
-[data-entity-embed-display-settings*="3x4"] {
-  &.rotate-left,
-  .rotate-left & {
+[class*="3x4"] {
+  &.rotate-left {
     shape-outside: polygon(4% 12%, 77% 5%, 89% 89%, 17% 96%) margin-box;
   }
 
-  &.rotate-right,
-  .rotate-right & {
+  &.rotate-right {
     shape-outside: polygon(13% 1%, 97% 9%, 83% 99%, -1% 91%) margin-box;
   }
 }
-[data-entity-embed-display-settings*="4x3"] {
-  &.rotate-left,
-  .rotate-left & {
+[class*="4x3"] {
+  &.rotate-left {
     shape-outside: polygon(3% 15%, 85% 2%, 93% 85%, 11% 98%) margin-box;
   }
 
-  &.rotate-right,
-  .rotate-right & {
+  &.rotate-right {
     shape-outside: polygon(11% 2%, 93% 15%, 85% 98%, 3% 85%) margin-box;
   }
 }
-[data-entity-embed-display-settings*="9x16"] {
-  &.rotate-left,
-  .rotate-left & {
+[class*="9x16"] {
+  &.rotate-left {
     shape-outside: polygon(2% 10%, 75% 4%, 91% 90%, 19% 96%) margin-box;
   }
 
-  &.rotate-right,
-  .rotate-right & {
+  &.rotate-right {
     shape-outside: polygon(19% 4%, 91% 10%, 75% 96%, 2% 91%) margin-box;
   }
 }
-[data-entity-embed-display-settings*="16x9"] {
-  &.rotate-left,
-  .rotate-left & {
+[class*="16x9"] {
+  &.rotate-left {
     shape-outside: polygon(4% 18%, 86% 2%, 92% 82%, 10% 98%) margin-box;
   }
 
-  &.rotate-right,
-  .rotate-right & {
+  &.rotate-right {
     shape-outside: polygon(10% 2%, 92% 18%, 86% 98%, 3% 82%) margin-box;
   }
 }
