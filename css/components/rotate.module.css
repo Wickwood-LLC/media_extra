@@ -80,17 +80,17 @@
 
 [class*="4x3"].rotate-right[class*="large"],
 [class*="4-3"].rotate-right[class*="large"] {
-  margin: 4% 6% 4% 3%;
+  margin: 4% 3% 4% 6%;
 }
 
 [class*="4x3"].rotate-right[class*="medium"],
 [class*="4-3"].rotate-right[class*="medium"] {
-  margin: 3% 4% 3% 2%;
+  margin: 3% 2% 3% 4%;
 }
 
 [class*="4x3"].rotate-right[class*="small"],
 [class*="4-3"].rotate-right[class*="small"] {
-  margin: 2% 3% 2% 1%;
+  margin: 2% 1% 2% 3%;
 }
 
 [class*="9x16"].rotate-left,
@@ -184,10 +184,46 @@
 }
 
 .align-left {
-  float: left;
+  float: none;
+}
+
+@media (min-width: 900px) {
+  .align-left[class*="large"] {
+    float: left;
+  }
+}
+
+@media (min-width: 720px) {
+  .align-left[class*="medium"] {
+    float: left;
+  }
+}
+
+@media (min-width: 400px) {
+  .align-left[class*="small"] {
+    float: left;
+  }
 }
 
 .align-right {
-  float: right;
+  float: none;
+}
+
+@media (min-width: 900px) {
+  .align-right[class*="large"] {
+    float: right;
+  }
+}
+
+@media (min-width: 720px) {
+  .align-right[class*="medium"] {
+    float: right;
+  }
+}
+
+@media (min-width: 400px) {
+  .align-right[class*="small"] {
+    float: right;
+  }
 }
 /*# sourceMappingURL=rotate.module.css.map */
