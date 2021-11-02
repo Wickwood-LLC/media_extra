@@ -75,7 +75,7 @@
 
 [class*="4x3"].rotate-right,
 [class*="4-3"].rotate-right {
-  shape-outside: polygon(9% 1%, 95% 14%, 87% 99%, 0.5% 86%) margin-box;
+  shape-outside: polygon(13.5% 1.5%, 99% 14%, 91% 99%, 5% 86%) margin-box;
 }
 
 [class*="4x3"].rotate-right[class*="large"],
