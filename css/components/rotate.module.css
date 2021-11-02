@@ -183,46 +183,162 @@
   clear: both;
 }
 
-.align-left {
+.align-left[class*="4x3"], .align-left[class*="4-3"], .align-left[class*="16x9"], .align-left[class*="16-9"] {
   float: none;
 }
 
+@media (max-width: 899px) {
+  .align-left[class*="4x3"][class*="large"], .align-left[class*="4-3"][class*="large"], .align-left[class*="16x9"][class*="large"], .align-left[class*="16-9"][class*="large"] {
+    margin: 2em auto;
+  }
+}
+
 @media (min-width: 900px) {
-  .align-left[class*="large"] {
+  .align-left[class*="4x3"][class*="large"], .align-left[class*="4-3"][class*="large"], .align-left[class*="16x9"][class*="large"], .align-left[class*="16-9"][class*="large"] {
     float: left;
+  }
+}
+
+@media (max-width: 719px) {
+  .align-left[class*="4x3"][class*="medium"], .align-left[class*="4-3"][class*="medium"], .align-left[class*="16x9"][class*="medium"], .align-left[class*="16-9"][class*="medium"] {
+    margin: 2em auto;
   }
 }
 
 @media (min-width: 720px) {
-  .align-left[class*="medium"] {
+  .align-left[class*="4x3"][class*="medium"], .align-left[class*="4-3"][class*="medium"], .align-left[class*="16x9"][class*="medium"], .align-left[class*="16-9"][class*="medium"] {
     float: left;
+  }
+}
+
+@media (max-width: 399px) {
+  .align-left[class*="4x3"][class*="small"], .align-left[class*="4-3"][class*="small"], .align-left[class*="16x9"][class*="small"], .align-left[class*="16-9"][class*="small"] {
+    margin: 2em auto;
   }
 }
 
 @media (min-width: 400px) {
-  .align-left[class*="small"] {
+  .align-left[class*="4x3"][class*="small"], .align-left[class*="4-3"][class*="small"], .align-left[class*="16x9"][class*="small"], .align-left[class*="16-9"][class*="small"] {
     float: left;
   }
 }
 
-.align-right {
+.align-left[class*="3x4"], .align-left[class*="3-4"], .align-left[class*="9x16"], .align-left[class*="9-16"] {
   float: none;
 }
 
+@media (max-width: 699px) {
+  .align-left[class*="3x4"][class*="large"], .align-left[class*="3-4"][class*="large"], .align-left[class*="9x16"][class*="large"], .align-left[class*="9-16"][class*="large"] {
+    margin: 2em auto;
+  }
+}
+
+@media (min-width: 700px) {
+  .align-left[class*="3x4"][class*="large"], .align-left[class*="3-4"][class*="large"], .align-left[class*="9x16"][class*="large"], .align-left[class*="9-16"][class*="large"] {
+    float: left;
+  }
+}
+
+@media (max-width: 599px) {
+  .align-left[class*="3x4"][class*="medium"], .align-left[class*="3-4"][class*="medium"], .align-left[class*="9x16"][class*="medium"], .align-left[class*="9-16"][class*="medium"] {
+    margin: 2em auto;
+  }
+}
+
+@media (min-width: 600px) {
+  .align-left[class*="3x4"][class*="medium"], .align-left[class*="3-4"][class*="medium"], .align-left[class*="9x16"][class*="medium"], .align-left[class*="9-16"][class*="medium"] {
+    float: left;
+  }
+}
+
+@media (max-width: 359px) {
+  .align-left[class*="3x4"][class*="small"], .align-left[class*="3-4"][class*="small"], .align-left[class*="9x16"][class*="small"], .align-left[class*="9-16"][class*="small"] {
+    margin: 2em auto;
+  }
+}
+
+@media (min-width: 360px) {
+  .align-left[class*="3x4"][class*="small"], .align-left[class*="3-4"][class*="small"], .align-left[class*="9x16"][class*="small"], .align-left[class*="9-16"][class*="small"] {
+    float: left;
+  }
+}
+
+.align-right[class*="4x3"], .align-right[class*="4-3"], .align-right[class*="16x9"], .align-right[class*="16-9"] {
+  float: none;
+}
+
+@media (max-width: 899px) {
+  .align-right[class*="4x3"][class*="large"], .align-right[class*="4-3"][class*="large"], .align-right[class*="16x9"][class*="large"], .align-right[class*="16-9"][class*="large"] {
+    margin: 2em auto;
+  }
+}
+
 @media (min-width: 900px) {
-  .align-right[class*="large"] {
+  .align-right[class*="4x3"][class*="large"], .align-right[class*="4-3"][class*="large"], .align-right[class*="16x9"][class*="large"], .align-right[class*="16-9"][class*="large"] {
     float: right;
+  }
+}
+
+@media (max-width: 719px) {
+  .align-right[class*="4x3"][class*="medium"], .align-right[class*="4-3"][class*="medium"], .align-right[class*="16x9"][class*="medium"], .align-right[class*="16-9"][class*="medium"] {
+    margin: 2em auto;
   }
 }
 
 @media (min-width: 720px) {
-  .align-right[class*="medium"] {
+  .align-right[class*="4x3"][class*="medium"], .align-right[class*="4-3"][class*="medium"], .align-right[class*="16x9"][class*="medium"], .align-right[class*="16-9"][class*="medium"] {
     float: right;
   }
 }
 
+@media (max-width: 399px) {
+  .align-right[class*="4x3"][class*="small"], .align-right[class*="4-3"][class*="small"], .align-right[class*="16x9"][class*="small"], .align-right[class*="16-9"][class*="small"] {
+    margin: 2em auto;
+  }
+}
+
 @media (min-width: 400px) {
-  .align-right[class*="small"] {
+  .align-right[class*="4x3"][class*="small"], .align-right[class*="4-3"][class*="small"], .align-right[class*="16x9"][class*="small"], .align-right[class*="16-9"][class*="small"] {
+    float: right;
+  }
+}
+
+.align-right[class*="3x4"], .align-right[class*="3-4"], .align-right[class*="9x16"], .align-right[class*="9-16"] {
+  float: none;
+}
+
+@media (max-width: 699px) {
+  .align-right[class*="3x4"][class*="large"], .align-right[class*="3-4"][class*="large"], .align-right[class*="9x16"][class*="large"], .align-right[class*="9-16"][class*="large"] {
+    margin: 2em auto;
+  }
+}
+
+@media (min-width: 700px) {
+  .align-right[class*="3x4"][class*="large"], .align-right[class*="3-4"][class*="large"], .align-right[class*="9x16"][class*="large"], .align-right[class*="9-16"][class*="large"] {
+    float: right;
+  }
+}
+
+@media (max-width: 599px) {
+  .align-right[class*="3x4"][class*="medium"], .align-right[class*="3-4"][class*="medium"], .align-right[class*="9x16"][class*="medium"], .align-right[class*="9-16"][class*="medium"] {
+    margin: 2em auto;
+  }
+}
+
+@media (min-width: 600px) {
+  .align-right[class*="3x4"][class*="medium"], .align-right[class*="3-4"][class*="medium"], .align-right[class*="9x16"][class*="medium"], .align-right[class*="9-16"][class*="medium"] {
+    float: right;
+  }
+}
+
+@media (max-width: 359px) {
+  .align-right[class*="3x4"][class*="small"], .align-right[class*="3-4"][class*="small"], .align-right[class*="9x16"][class*="small"], .align-right[class*="9-16"][class*="small"] {
+    margin: 2em auto;
+  }
+}
+
+@media (min-width: 360px) {
+  .align-right[class*="3x4"][class*="small"], .align-right[class*="3-4"][class*="small"], .align-right[class*="9x16"][class*="small"], .align-right[class*="9-16"][class*="small"] {
     float: right;
   }
 }
