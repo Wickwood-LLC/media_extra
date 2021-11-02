@@ -55,12 +55,42 @@
 
 [class*="4x3"].rotate-left,
 [class*="4-3"].rotate-left {
-  shape-outside: polygon(3% 15%, 85% 2%, 93% 85%, 11% 98%) margin-box;
+  shape-outside: polygon(0.5% 14%, 87% 1%, 95.5% 86%, 8.5% 99%) margin-box;
+}
+
+[class*="4x3"].rotate-left[class*="large"],
+[class*="4-3"].rotate-left[class*="large"] {
+  margin: 4% 6% 4% 3%;
+}
+
+[class*="4x3"].rotate-left[class*="medium"],
+[class*="4-3"].rotate-left[class*="medium"] {
+  margin: 3% 4% 3% 2%;
+}
+
+[class*="4x3"].rotate-left[class*="small"],
+[class*="4-3"].rotate-left[class*="small"] {
+  margin: 2% 3% 2% 1%;
 }
 
 [class*="4x3"].rotate-right,
 [class*="4-3"].rotate-right {
-  shape-outside: polygon(11% 2%, 93% 15%, 85% 98%, 3% 85%) margin-box;
+  shape-outside: polygon(9% 1%, 95% 14%, 87% 99%, 0.5% 86%) margin-box;
+}
+
+[class*="4x3"].rotate-right[class*="large"],
+[class*="4-3"].rotate-right[class*="large"] {
+  margin: 4% 6% 4% 3%;
+}
+
+[class*="4x3"].rotate-right[class*="medium"],
+[class*="4-3"].rotate-right[class*="medium"] {
+  margin: 3% 4% 3% 2%;
+}
+
+[class*="4x3"].rotate-right[class*="small"],
+[class*="4-3"].rotate-right[class*="small"] {
+  margin: 2% 3% 2% 1%;
 }
 
 [class*="9x16"].rotate-left,
@@ -105,12 +135,42 @@
 
 [class*="16x9"].rotate-left,
 [class*="16-9"].rotate-left {
-  shape-outside: polygon(4% 18%, 86% 2%, 92% 82%, 10% 98%) margin-box;
+  shape-outside: polygon(1% 17%, 88% 1%, 95% 85%, 8% 100%) margin-box;
+}
+
+[class*="16x9"].rotate-left[class*="large"],
+[class*="16-9"].rotate-left[class*="large"] {
+  margin: 4% 6% 4% 3%;
+}
+
+[class*="16x9"].rotate-left[class*="medium"],
+[class*="16-9"].rotate-left[class*="medium"] {
+  margin: 3% 4% 3% 2%;
+}
+
+[class*="16x9"].rotate-left[class*="small"],
+[class*="16-9"].rotate-left[class*="small"] {
+  margin: 2% 3% 2% 1%;
 }
 
 [class*="16x9"].rotate-right,
 [class*="16-9"].rotate-right {
-  shape-outside: polygon(10% 2%, 92% 18%, 86% 98%, 3% 82%) margin-box;
+  shape-outside: polygon(12.3% 1%, 98.5% 17.5%, 92.5% 99%, 5.5% 83%) margin-box;
+}
+
+[class*="16x9"].rotate-right[class*="large"],
+[class*="16-9"].rotate-right[class*="large"] {
+  margin: 4% 3% 4% 6%;
+}
+
+[class*="16x9"].rotate-right[class*="medium"],
+[class*="16-9"].rotate-right[class*="medium"] {
+  margin: 3% 2% 3% 4%;
+}
+
+[class*="16x9"].rotate-right[class*="small"],
+[class*="16-9"].rotate-right[class*="small"] {
+  margin: 2% 1% 2% 3%;
 }
 
 .align-center .rotate-right {
