@@ -188,9 +188,9 @@
     margin: 2em auto;
     float: none;
   }
-  .align-left[class*="4x3"][class*="large"][class*="rotate-right"], .align-left[class*="4-3"][class*="large"][class*="rotate-right"], .align-left[class*="16x9"][class*="large"][class*="rotate-right"], .align-left[class*="16-9"][class*="large"][class*="rotate-right"] {
-    -webkit-transform: rotate(7deg) scale(0.9);
-            transform: rotate(7deg) scale(0.9);
+  .align-left[class*="4x3"][class*="large"][class*="rotate-left"], .align-left[class*="4-3"][class*="large"][class*="rotate-left"], .align-left[class*="16x9"][class*="large"][class*="rotate-left"], .align-left[class*="16-9"][class*="large"][class*="rotate-left"] {
+    -webkit-transform: rotate(-7deg) scale(0.9);
+            transform: rotate(-7deg) scale(0.9);
   }
   .align-left[class*="4x3"][class*="large"][class*="rotate-right"], .align-left[class*="4-3"][class*="large"][class*="rotate-right"], .align-left[class*="16x9"][class*="large"][class*="rotate-right"], .align-left[class*="16-9"][class*="large"][class*="rotate-right"] {
     -webkit-transform: rotate(7deg) scale(0.9);

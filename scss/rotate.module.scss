@@ -153,8 +153,8 @@
         margin: 2em auto;
         float: none;
 
-        &[class*="rotate-right"]{
-          transform: rotate(7deg) scale(0.9);
+        &[class*="rotate-left"]{
+          transform: rotate(-7deg) scale(0.9);
         }
         &[class*="rotate-right"]{
           transform: rotate(7deg) scale(0.9);
