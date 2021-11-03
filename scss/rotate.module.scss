@@ -152,6 +152,13 @@
       @media (max-width: 949px) {
         margin: 2em auto;
         float: none;
+
+        &[class*="rotate-right"]{
+          transform: rotate(7deg) scale(0.9);
+        }
+        &[class*="rotate-right"]{
+          transform: rotate(7deg) scale(0.9);
+        }
       }
       @media (min-width: 950px) {
         float: left;
@@ -185,6 +192,13 @@
       @media (max-width: 799px) {
         margin: 2em auto;
         float: none;
+
+        &[class*="rotate-left"]{
+          transform: rotate(-7deg) scale(0.9);
+        }
+        &[class*="rotate-right"]{
+          transform: rotate(7deg) scale(0.9);
+        }
       }
       @media (min-width: 800px) {
         float: left;
@@ -220,6 +234,13 @@
       @media (max-width: 949px) {
         margin: 2em auto;
         float: none;
+
+        &[class*="rotate-left"]{
+          transform: rotate(-7deg) scale(0.9);
+        }
+        &[class*="rotate-right"]{
+          transform: rotate(7deg) scale(0.9);
+        }
       }
       @media (min-width: 950px) {
         float: right;
@@ -253,6 +274,13 @@
       @media (max-width: 799px) {
         margin: 2em auto;
         float: none;
+
+        &[class*="rotate-left"]{
+          transform: rotate(-7deg) scale(0.9);
+        }
+        &[class*="rotate-right"]{
+          transform: rotate(7deg) scale(0.9);
+        }
       }
       @media (min-width: 800px) {
         float: right;
