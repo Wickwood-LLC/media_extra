@@ -16,7 +16,7 @@ function media_extra_entity_presave(EntityInterface $entity) {
           $images = $entity->get($field_name);
           foreach ($images as $key => $image) {
             $entity_manager = \Drupal::entityTypeManager();
-            if (empty($image->alt)) {
+            if (empty($image->alt) && !empty($image->entity)) {
               $images[$key]->alt = preg_replace('/\.[^.\s]+$/', '', $image->entity->getFilename());
             }
           }
