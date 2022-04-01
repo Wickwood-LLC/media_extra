@@ -48,7 +48,7 @@ class FilterRotate extends FilterBase {
           }
 
           $context = $this->getNodeAttributesAsArray($node);
-          if (isset($context['data-entity-embed-display-settings']['image_style'])) {
+          if (!empty($context['data-entity-embed-display-settings']['image_style'])) {
             $classes[] = 'image-style--' . str_replace('_', '-', $context['data-entity-embed-display-settings']['image_style']);
           }
           $node->setAttribute('class', implode(' ', $classes));
