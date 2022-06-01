@@ -28,6 +28,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFactoryPluginInterface {
 
+  const LINK_TEXT_TYPE_FILENAME = 'filename';
+  const LINK_TEXT_TYPE_URL = 'url';
+  const LINK_TEXT_TYPE_CUSTOM = 'custom';
+
   /**
    * The renderer service.
    *
@@ -93,7 +97,7 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
   public static function defaultSettings() {
     return [
       'link_text' => '',
-      'use_url_as_link_text' => FALSE,
+      'link_text_type' => self::LINK_TEXT_TYPE_FILENAME,
     ] + parent::defaultSettings();
   }
 
@@ -113,10 +117,15 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
 
     // $media = $form_state->get('entity');
 
-    $element['use_url_as_link_text'] = [
-      '#title' => t('Use URL itself as link text'),
-      '#type' => 'checkbox',
-      '#default_value' => $this->getSetting('use_url_as_link_text'),
+    $element['link_text_type'] = [
+      '#title' => t('Link Text Type'),
+      '#type' => 'radios',
+      '#options' => [
+        self::LINK_TEXT_TYPE_FILENAME => $this->t('Filename'),
+        self::LINK_TEXT_TYPE_URL => $this->t('URL'),
+        self::LINK_TEXT_TYPE_CUSTOM => $this->t('Custom Text'),
+      ],
+      '#default_value' => $this->getSetting('link_text_type'),
     ];
 
     $element['link_text'] = [
@@ -126,7 +135,7 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
       '#description' => t('Enter custom link to use. If empty media name will be used as text.'),
       '#states' => [
         'visible' => [
-          ':input[name="' . $parent_path . '[use_url_as_link_text]"]' => ['checked' => FALSE],
+          ':input[name="' . $parent_path . '[link_text_type]"]' => ['value' => self::LINK_TEXT_TYPE_CUSTOM],
         ],
       ],
     ];
@@ -165,7 +174,7 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
     }
 
     $custom_link_text = $this->getSetting('link_text');
-    $use_url_as_link_text = $this->getSetting('use_url_as_link_text');
+    $link_text_type = $this->getSetting('link_text_type');
 
     /** @var \Drupal\media\MediaInterface[] $media_items */
     foreach ($media_items as $delta => $media) {
@@ -177,16 +186,14 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
           $link_url = $source->getSourceFieldValue($media);
         }
 
-        if ($use_url_as_link_text) {
+        if ($link_text_type == self::LINK_TEXT_TYPE_URL) {
           $link_text = $link_url;
         }
+        elseif ($link_text_type == self::LINK_TEXT_TYPE_CUSTOM && !empty($custom_link_text)) {
+          $link_text = $custom_link_text;
+        }
         else {
-          if (!empty($custom_link_text)) {
-            $link_text = $custom_link_text;
-          }
-          else {
-            $link_text = $source->getMetadata($media, 'default_name');
-          }
+          $link_text = $source->getMetadata($media, 'default_name');
         }
 
         $elements[$delta] = [
@@ -204,11 +211,15 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
         $source_field = $media->getSource()->getConfiguration()['source_field'];
         $file = $media->get($source_field)->entity;
 
-        if ($use_url_as_link_text) {
+        if ($link_text_type == self::LINK_TEXT_TYPE_URL) {
           $link_text = $file->createFileUrl(FALSE);
         }
+        elseif ($link_text_type == self::LINK_TEXT_TYPE_CUSTOM && !empty($custom_link_text)) {
+          $link_text = $custom_link_text;
+        }
         else {
-          $link_text = !empty($custom_link_text) ? $custom_link_text : $media->getName();
+          // Use self::LINK_TEXT_TYPE_FILENAME as fallback.
+          $link_text = $file->getFilename();
         }
         if ($file) {
           $elements[$delta] = [
