@@ -95,6 +95,7 @@ function media_extra_theme() {
           'icon' => FALSE,
           'file_size' => FALSE,
         ],
+        'icon_position' => NULL,
       ],
     ],
   ];
