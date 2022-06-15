@@ -99,7 +99,9 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
     return [
       'link_text' => '',
       'link_text_type' => self::LINK_TEXT_TYPE_FILENAME,
-      'options' => [],
+      'display_file_type' => FALSE,
+      'display_icon' => FALSE,
+      'display_file_size' => FALSE,
       'icon_position' => 'before',
     ] + parent::defaultSettings();
   }
@@ -144,18 +146,25 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
       ],
     ];
 
-    $options =  $this->getSetting('options');
+    $element['display_file_type'] = [
+      '#title' => t('Display File Type'),
+      '#type' => 'checkbox',
+      '#default_value' => $this->getSetting('display_file_type'),
+      '#description' => t('Select to display file type along with the link.'),
+    ];
 
-    $element['options'] = [
-      '#title' => t('Options'),
-      '#type' => 'checkboxes',
-      '#default_value' => $options,
-      '#options' => [
-        'file_type' => $this->t('File Type'),
-        'icon' => $this->t('Icon'),
-        'file_size' => $this->t('File Size'),
-      ],
-      '#description' => t('Select the extra informations to be displayed along with the link.'),
+    $element['display_icon'] = [
+      '#title' => t('Display Icon'),
+      '#type' => 'checkbox',
+      '#default_value' => $this->getSetting('display_icon'),
+      '#description' => t('Select to display icon along with the link.'),
+    ];
+
+    $element['display_file_size'] = [
+      '#title' => t('Display File Size'),
+      '#type' => 'checkbox',
+      '#default_value' => $this->getSetting('display_file_size'),
+      '#description' => t('Select to display file size along with the link.'),
     ];
 
     $element['icon_position'] = [
@@ -169,7 +178,7 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
       '#description' => t('Select the position where icon to be displayed along with the link.'),
       '#states' => [
         'visible' => [
-          ':input[name="' . $parent_path . '[options][icon]"]' => ['checked' => TRUE],
+          ':input[name="' . $parent_path . '[display_icon]"]' => ['checked' => TRUE],
         ],
       ],
     ];
@@ -244,6 +253,11 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
       else if ($source instanceof FileSource) {
         $source_field = $media->getSource()->getConfiguration()['source_field'];
         $file = $media->get($source_field)->entity;
+        $options = [
+          'file_type' => $this->getSetting('display_file_type'),
+          'icon' => $this->getSetting('display_icon'),
+          'file_size' => $this->getSetting('display_file_size'),
+        ];
 
         if ($link_text_type == self::LINK_TEXT_TYPE_MEDIA_LABEL) {
           $link_text = $media->label();
@@ -263,7 +277,8 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
             '#theme' => 'media_extra_file_link',
             '#file' => $file,
             '#description' => $link_text,
-            '#options' => $this->getSetting('options'),
+            '#options' => $options,
+            '#icon_position' => $this->getSetting('icon_position'),
             '#cache' => [
               'tags' => $file->getCacheTags(),
             ],
