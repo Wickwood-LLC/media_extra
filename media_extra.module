@@ -4,6 +4,9 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\editor\Entity\Editor;
+use Symfony\Component\Mime\MimeTypes;
+use Drupal\Core\Template\Attribute;
+use Drupal\Core\Link;
 
 /**
  * Implements hook_entity_presave().
@@ -75,4 +78,86 @@ function media_extra_page_attachments(array &$page) {
  */
 function media_extra_ckeditor_css_alter(array &$css, Editor $editor) {
   $css[] = drupal_get_path('module', 'media_extra') . '/css/components/rotate.module.css';
+}
+
+/**
+ * Implements hook_theme().
+ */
+function media_extra_theme() {
+  return [
+    'media_extra_file_link' => [
+      'variables' => [
+        'file' => NULL,
+        'description' => NULL,
+        'attributes' => [],
+        'options' => [
+          'file_type' => FALSE,
+          'icon' => FALSE,
+          'file_size' => FALSE,
+        ],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Prepares variables for file link templates.
+ *
+ * Default template: file-link.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - file: A File entity to which the link will be created.
+ *   - icon_directory: (optional) A path to a directory of icons to be used for
+ *     files. Defaults to the value of the "icon.directory" variable.
+ *   - description: A description to be displayed instead of the filename.
+ *   - attributes: An associative array of attributes to be placed in the a tag.
+ */
+function template_preprocess_media_extra_file_link(&$variables) {
+  $file = $variables['file'];
+  $options = [];
+
+  /** @var \Drupal\Core\File\FileUrlGeneratorInterface $file_url_generator */
+  $file_url_generator = \Drupal::service('file_url_generator');
+  $url = $file_url_generator->generate($file->getFileUri());
+
+  $mime_type = $file->getMimeType();
+
+  if ($variables['options']['file_type']) {
+    $types = MimeTypes::getDefault()->getExtensions($mime_type);
+    if (!empty($types)) {
+      $variables['file_type'] = strtoupper(reset($types));
+    }
+  }
+
+
+  $classes = [ 'file' ];
+  if ($variables['options']['icon']) {
+    $options['attributes']['type'] = $mime_type;
+
+    // Classes to add to the file field for icons.
+    // Add a specific class for each and every mime type.
+    $classes[] = 'file--mime-' . strtr($mime_type, ['/' => '-', '.' => '-']);
+    // Add a more general class for groups of well known MIME types.
+    $classes[] = 'file--' . file_icon_class($mime_type);
+  }
+
+  // Use the description as the link text if available.
+  if (empty($variables['description'])) {
+    $link_text = $file->getFilename();
+  }
+  else {
+    $link_text = $variables['description'];
+    $options['attributes']['title'] = $file->getFilename();
+  }
+
+  if ($variables['options']['file_size']) {
+    $variables['file_size'] = format_size($file->getSize() ?? 0);
+  }
+
+  // Set file classes to the options array.
+  $variables['attributes'] = new Attribute($variables['attributes']);
+  $variables['attributes']->addClass($classes);
+
+  $variables['link'] = Link::fromTextAndUrl($link_text, $url->mergeOptions($options))->toRenderable();
 }

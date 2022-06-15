@@ -1,0 +1,28 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a link to a file.
+ *
+ * Available variables:
+ * - attributes: The HTML attributes for the containing element.
+ * - link: A link to the file.
+ * - file_size: The size of the file.
+ *
+ * @see template_preprocess_file_link()
+ *
+ * @ingroup themeable
+ */
+#}
+{% if icon_position == 'before' %}
+  <span class="file-icon"></span>
+{% endif %}
+<span{{ attributes }}>{{ link }}</span>
+{% if icon_position == 'after' %}
+  <span class="file-icon"></span>
+{% endif %}
+{% if file_type %}
+  <span>({{ file_type }})</span>
+{% endif %}
+{% if file_size %}
+  <span>({{ file_size }})</span>
+{% endif %}
