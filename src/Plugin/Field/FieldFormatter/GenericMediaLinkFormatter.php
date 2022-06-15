@@ -28,6 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFactoryPluginInterface {
 
+  const LINK_TEXT_TYPE_MEDIA_LABEL = 'media_label';
   const LINK_TEXT_TYPE_FILENAME = 'filename';
   const LINK_TEXT_TYPE_URL = 'url';
   const LINK_TEXT_TYPE_CUSTOM = 'custom';
@@ -98,6 +99,8 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
     return [
       'link_text' => '',
       'link_text_type' => self::LINK_TEXT_TYPE_FILENAME,
+      'options' => [],
+      'icon_position' => 'before',
     ] + parent::defaultSettings();
   }
 
@@ -121,7 +124,8 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
       '#title' => t('Link Text Type'),
       '#type' => 'radios',
       '#options' => [
-        self::LINK_TEXT_TYPE_FILENAME => $this->t('Filename'),
+        self::LINK_TEXT_TYPE_MEDIA_LABEL => $this->t('Media Label'),
+        self::LINK_TEXT_TYPE_FILENAME => $this->t('File Name'),
         self::LINK_TEXT_TYPE_URL => $this->t('URL'),
         self::LINK_TEXT_TYPE_CUSTOM => $this->t('Custom Text'),
       ],
@@ -136,6 +140,36 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
       '#states' => [
         'visible' => [
           ':input[name="' . $parent_path . '[link_text_type]"]' => ['value' => self::LINK_TEXT_TYPE_CUSTOM],
+        ],
+      ],
+    ];
+
+    $options =  $this->getSetting('options');
+
+    $element['options'] = [
+      '#title' => t('Options'),
+      '#type' => 'checkboxes',
+      '#default_value' => $options,
+      '#options' => [
+        'file_type' => $this->t('File Type'),
+        'icon' => $this->t('Icon'),
+        'file_size' => $this->t('File Size'),
+      ],
+      '#description' => t('Select the extra informations to be displayed along with the link.'),
+    ];
+
+    $element['icon_position'] = [
+      '#title' => t('Icon Position'),
+      '#type' => 'radios',
+      '#default_value' =>  $this->getSetting('icon_position'),
+      '#options' => [
+        'before' => $this->t('Before'),
+        'after' => $this->t('After'),
+      ],
+      '#description' => t('Select the position where icon to be displayed along with the link.'),
+      '#states' => [
+        'visible' => [
+          ':input[name="' . $parent_path . '[options][icon]"]' => ['checked' => TRUE],
         ],
       ],
     ];
@@ -211,7 +245,10 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
         $source_field = $media->getSource()->getConfiguration()['source_field'];
         $file = $media->get($source_field)->entity;
 
-        if ($link_text_type == self::LINK_TEXT_TYPE_URL) {
+        if ($link_text_type == self::LINK_TEXT_TYPE_MEDIA_LABEL) {
+          $link_text = $media->label();
+        }
+        elseif ($link_text_type == self::LINK_TEXT_TYPE_URL) {
           $link_text = $file->createFileUrl(FALSE);
         }
         elseif ($link_text_type == self::LINK_TEXT_TYPE_CUSTOM && !empty($custom_link_text)) {
@@ -223,9 +260,10 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
         }
         if ($file) {
           $elements[$delta] = [
-            '#theme' => 'file_link',
+            '#theme' => 'media_extra_file_link',
             '#file' => $file,
             '#description' => $link_text,
+            '#options' => $this->getSetting('options'),
             '#cache' => [
               'tags' => $file->getCacheTags(),
             ],
