@@ -106,9 +106,9 @@ class SettingsForm extends ConfigFormBase {
         '#default_value' => $config->get('linkit_profile') ?: '',
         '#empty_option' => $this->t('- Select profile -'),
         '#description' => $this->t('Select the linkit profile you wish to use with the Media Image and Responsive Media Image formatters.'),
-        '#element_validate' => array(
-          array($this, 'validateLinkitProfileSelection'),
-        ),
+        // '#element_validate' => array(
+        //   array($this, 'validateLinkitProfileSelection'),
+        // ),
       );
     }
 
