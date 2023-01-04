@@ -13,7 +13,7 @@ use Drupal\embed\DomHelperTrait;
  * @Filter(
  *   id = "me_filter_rotate",
  *   title = @Translation("Rotate images"),
- *   description = @Translation("Uses a <code>data-rotate</code> attribute on <code>&lt;img&gt;</code> tags to align images."),
+ *   description = @Translation("Uses a <code>data-rotate</code> attribute on <code>&lt;img&gt;</code> tags to rotate images. When used with caption filter this should come before the caption filter."),
  *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE
  * )
  */
