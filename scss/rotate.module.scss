@@ -135,6 +135,9 @@
 }
 
 .align-center {
+	margin-left: auto !important;
+	margin-right: auto !important;
+
 	.rotate-right {
 		display: block;
 		clear: both;

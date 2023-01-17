@@ -145,6 +145,10 @@
   margin: 2% 3% 2% 3%;
 }
 
+.align-center {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
 .align-center .rotate-right {
   display: block;
   clear: both;
