@@ -13,6 +13,11 @@
   shape-margin: 1em;
 }
 
+.rotate-left:not(.rotate-caption) > .embedded-entity,
+.rotate-right:not(.rotate-caption) > .embedded-entity {
+  margin-bottom: 7%;
+}
+
 [class*="3x4"].rotate-left,
 [class*="3-4"].rotate-left {
   shape-outside: polygon(-1% 8%, 82% -1%, 97% 92%, 12% 101%) margin-box;

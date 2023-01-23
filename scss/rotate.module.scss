@@ -11,6 +11,10 @@
 	transform: rotate(7deg);
 	shape-margin: 1em;
 }
+.rotate-left:not(.rotate-caption) > .embedded-entity,
+.rotate-right:not(.rotate-caption) > .embedded-entity {
+	margin-bottom: 7%;
+}
 
 [class*="3x4"],
 [class*="3-4"] {
