@@ -154,6 +154,8 @@
 }
 
 .align-left {
+	margin-right: 2em;
+
 	&[class*="4x3"],
 	&[class*="4-3"],
 	&[class*="16x9"],
@@ -236,6 +238,8 @@
 }
 
 .align-right {
+	margin-left: 2em;
+
 	&[class*="4x3"],
 	&[class*="4-3"],
 	&[class*="16x9"],
