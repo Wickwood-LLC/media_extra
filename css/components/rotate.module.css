@@ -18,135 +18,135 @@
   margin-bottom: 7%;
 }
 
-[class*="3x4"].rotate-left,
-[class*="3-4"].rotate-left {
+[class*="3x4"]:not(.align-center).rotate-left,
+[class*="3-4"]:not(.align-center).rotate-left {
   shape-outside: polygon(-1% 8%, 82% -1%, 97% 92%, 12% 101%) margin-box;
 }
-[class*="3x4"].rotate-left[class*=large],
-[class*="3-4"].rotate-left[class*=large] {
+[class*="3x4"]:not(.align-center).rotate-left[class*=large],
+[class*="3-4"]:not(.align-center).rotate-left[class*=large] {
   margin: 3% 6% 3% 6%;
 }
-[class*="3x4"].rotate-left[class*=medium],
-[class*="3-4"].rotate-left[class*=medium] {
+[class*="3x4"]:not(.align-center).rotate-left[class*=medium],
+[class*="3-4"]:not(.align-center).rotate-left[class*=medium] {
   margin: 2% 4% 2% 6%;
 }
-[class*="3x4"].rotate-left[class*=small],
-[class*="3-4"].rotate-left[class*=small] {
+[class*="3x4"]:not(.align-center).rotate-left[class*=small],
+[class*="3-4"]:not(.align-center).rotate-left[class*=small] {
   margin: 1% 3% 1% 3%;
 }
-[class*="3x4"].rotate-right,
-[class*="3-4"].rotate-right {
+[class*="3x4"]:not(.align-center).rotate-right,
+[class*="3-4"]:not(.align-center).rotate-right {
   shape-outside: polygon(15% -1%, 100% 7%, 86% 101%, 0% 93%) margin-box;
 }
-[class*="3x4"].rotate-right[class*=large],
-[class*="3-4"].rotate-right[class*=large] {
+[class*="3x4"]:not(.align-center).rotate-right[class*=large],
+[class*="3-4"]:not(.align-center).rotate-right[class*=large] {
   margin: 3% 6% 3% 6%;
 }
-[class*="3x4"].rotate-right[class*=medium],
-[class*="3-4"].rotate-right[class*=medium] {
+[class*="3x4"]:not(.align-center).rotate-right[class*=medium],
+[class*="3-4"]:not(.align-center).rotate-right[class*=medium] {
   margin: 2% 4% 2% 4%;
 }
-[class*="3x4"].rotate-right[class*=small],
-[class*="3-4"].rotate-right[class*=small] {
+[class*="3x4"]:not(.align-center).rotate-right[class*=small],
+[class*="3-4"]:not(.align-center).rotate-right[class*=small] {
   margin: 1% 3% 1% 3%;
 }
 
-[class*="4x3"].rotate-left,
-[class*="4-3"].rotate-left {
+[class*="4x3"]:not(.align-center).rotate-left,
+[class*="4-3"]:not(.align-center).rotate-left {
   shape-outside: polygon(0.5% 14%, 87% 1%, 95.5% 86%, 8.5% 99%) margin-box;
 }
-[class*="4x3"].rotate-left[class*=large],
-[class*="4-3"].rotate-left[class*=large] {
+[class*="4x3"]:not(.align-center).rotate-left[class*=large],
+[class*="4-3"]:not(.align-center).rotate-left[class*=large] {
   margin: 4% 6% 4% 6%;
 }
-[class*="4x3"].rotate-left[class*=medium],
-[class*="4-3"].rotate-left[class*=medium] {
+[class*="4x3"]:not(.align-center).rotate-left[class*=medium],
+[class*="4-3"]:not(.align-center).rotate-left[class*=medium] {
   margin: 3% 5% 3% 5%;
 }
-[class*="4x3"].rotate-left[class*=small],
-[class*="4-3"].rotate-left[class*=small] {
+[class*="4x3"]:not(.align-center).rotate-left[class*=small],
+[class*="4-3"]:not(.align-center).rotate-left[class*=small] {
   margin: 2% 3% 2% 3%;
 }
-[class*="4x3"].rotate-right,
-[class*="4-3"].rotate-right {
+[class*="4x3"]:not(.align-center).rotate-right,
+[class*="4-3"]:not(.align-center).rotate-right {
   shape-outside: polygon(13.5% 1.5%, 99% 14%, 91% 99%, 5% 86%) margin-box;
 }
-[class*="4x3"].rotate-right[class*=large],
-[class*="4-3"].rotate-right[class*=large] {
+[class*="4x3"]:not(.align-center).rotate-right[class*=large],
+[class*="4-3"]:not(.align-center).rotate-right[class*=large] {
   margin: 4% 6% 4% 6%;
 }
-[class*="4x3"].rotate-right[class*=medium],
-[class*="4-3"].rotate-right[class*=medium] {
+[class*="4x3"]:not(.align-center).rotate-right[class*=medium],
+[class*="4-3"]:not(.align-center).rotate-right[class*=medium] {
   margin: 3% 4% 3% 4%;
 }
-[class*="4x3"].rotate-right[class*=small],
-[class*="4-3"].rotate-right[class*=small] {
+[class*="4x3"]:not(.align-center).rotate-right[class*=small],
+[class*="4-3"]:not(.align-center).rotate-right[class*=small] {
   margin: 2% 3% 2% 3%;
 }
 
-[class*="9x16"].rotate-left,
-[class*="9-16"].rotate-left {
+[class*="9x16"]:not(.align-center).rotate-left,
+[class*="9-16"]:not(.align-center).rotate-left {
   shape-outside: polygon(-2% 6%, 77% 0%, 95% 94%, 16% 100%) margin-box;
 }
-[class*="9x16"].rotate-left[class*=large],
-[class*="9-16"].rotate-left[class*=large] {
+[class*="9x16"]:not(.align-center).rotate-left[class*=large],
+[class*="9-16"]:not(.align-center).rotate-left[class*=large] {
   margin: 2% 6% 2% 6%;
 }
-[class*="9x16"].rotate-left[class*=medium],
-[class*="9-16"].rotate-left[class*=medium] {
+[class*="9x16"]:not(.align-center).rotate-left[class*=medium],
+[class*="9-16"]:not(.align-center).rotate-left[class*=medium] {
   margin: 2% 5% 2% 5%;
 }
-[class*="9x16"].rotate-left[class*=small],
-[class*="9-16"].rotate-left[class*=small] {
+[class*="9x16"]:not(.align-center).rotate-left[class*=small],
+[class*="9-16"]:not(.align-center).rotate-left[class*=small] {
   margin: 2% 3% 2% 3%;
 }
-[class*="9x16"].rotate-right,
-[class*="9-16"].rotate-right {
+[class*="9x16"]:not(.align-center).rotate-right,
+[class*="9-16"]:not(.align-center).rotate-right {
   shape-outside: polygon(21% 0%, 102% 6%, 83% 100%, 3% 94%) margin-box;
 }
-[class*="9x16"].rotate-right[class*=large],
-[class*="9-16"].rotate-right[class*=large] {
+[class*="9x16"]:not(.align-center).rotate-right[class*=large],
+[class*="9-16"]:not(.align-center).rotate-right[class*=large] {
   margin: 2% 6% 2% 6%;
 }
-[class*="9x16"].rotate-right[class*=medium],
-[class*="9-16"].rotate-right[class*=medium] {
+[class*="9x16"]:not(.align-center).rotate-right[class*=medium],
+[class*="9-16"]:not(.align-center).rotate-right[class*=medium] {
   margin: 2% 5% 2% 5%;
 }
-[class*="9x16"].rotate-right[class*=small],
-[class*="9-16"].rotate-right[class*=small] {
+[class*="9x16"]:not(.align-center).rotate-right[class*=small],
+[class*="9-16"]:not(.align-center).rotate-right[class*=small] {
   margin: 2% 3% 2% 3%;
 }
 
-[class*="16x9"].rotate-left,
-[class*="16-9"].rotate-left {
+[class*="16x9"]:not(.align-center).rotate-left,
+[class*="16-9"]:not(.align-center).rotate-left {
   shape-outside: polygon(1% 17%, 88% 1%, 95% 85%, 8% 100%) margin-box;
 }
-[class*="16x9"].rotate-left[class*=large],
-[class*="16-9"].rotate-left[class*=large] {
+[class*="16x9"]:not(.align-center).rotate-left[class*=large],
+[class*="16-9"]:not(.align-center).rotate-left[class*=large] {
   margin: 4% 6% 4% 6%;
 }
-[class*="16x9"].rotate-left[class*=medium],
-[class*="16-9"].rotate-left[class*=medium] {
+[class*="16x9"]:not(.align-center).rotate-left[class*=medium],
+[class*="16-9"]:not(.align-center).rotate-left[class*=medium] {
   margin: 3% 4% 3% 4%;
 }
-[class*="16x9"].rotate-left[class*=small],
-[class*="16-9"].rotate-left[class*=small] {
+[class*="16x9"]:not(.align-center).rotate-left[class*=small],
+[class*="16-9"]:not(.align-center).rotate-left[class*=small] {
   margin: 2% 3% 2% 3%;
 }
-[class*="16x9"].rotate-right,
-[class*="16-9"].rotate-right {
+[class*="16x9"]:not(.align-center).rotate-right,
+[class*="16-9"]:not(.align-center).rotate-right {
   shape-outside: polygon(12.3% 1%, 98.5% 17.5%, 92.5% 99%, 5.5% 83%) margin-box;
 }
-[class*="16x9"].rotate-right[class*=large],
-[class*="16-9"].rotate-right[class*=large] {
+[class*="16x9"]:not(.align-center).rotate-right[class*=large],
+[class*="16-9"]:not(.align-center).rotate-right[class*=large] {
   margin: 4% 6% 4% 6%;
 }
-[class*="16x9"].rotate-right[class*=medium],
-[class*="16-9"].rotate-right[class*=medium] {
+[class*="16x9"]:not(.align-center).rotate-right[class*=medium],
+[class*="16-9"]:not(.align-center).rotate-right[class*=medium] {
   margin: 3% 4% 3% 4%;
 }
-[class*="16x9"].rotate-right[class*=small],
-[class*="16-9"].rotate-right[class*=small] {
+[class*="16x9"]:not(.align-center).rotate-right[class*=small],
+[class*="16-9"]:not(.align-center).rotate-right[class*=small] {
   margin: 2% 3% 2% 3%;
 }
 
