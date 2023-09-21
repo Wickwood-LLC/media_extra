@@ -43,7 +43,7 @@ function media_extra_form_entity_embed_dialog_alter(&$form, FormStateInterface $
         '#title' => t('Rotate'),
         '#type' => 'radios',
         '#options' => [
-          '' => t('None'),
+          'none' => t('None'),
           'left' => t('Left'),
           'right' => t('Right'),
         ],
