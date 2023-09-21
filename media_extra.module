@@ -47,7 +47,7 @@ function media_extra_form_entity_embed_dialog_alter(&$form, FormStateInterface $
           'left' => t('Left'),
           'right' => t('Right'),
         ],
-        '#default_value' => isset($entity_element['data-rotate']) ? $entity_element['data-rotate'] : '',
+        '#default_value' => !empty($entity_element['data-rotate']) ? $entity_element['data-rotate'] : 'none',
         '#wrapper_attributes' => ['class' => ['container-inline']],
         '#attributes' => ['class' => ['container-inline']],
       ];
