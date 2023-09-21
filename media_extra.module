@@ -77,7 +77,7 @@ function media_extra_page_attachments(array &$page) {
  * Implements hook_ckeditor_css_alter().
  */
 function media_extra_ckeditor_css_alter(array &$css, Editor $editor) {
-  $css[] = drupal_get_path('module', 'media_extra') . '/css/components/rotate.module.css';
+  $css[] = \Drupal::service('extension.list.module')->getPath('media_extra') . '/css/components/rotate.module.css';
 }
 
 /**
