@@ -37,10 +37,10 @@ class FilterRotate extends FilterBase {
         $rotate_caption = $node->getAttribute('data-rotate-caption');
         $node->removeAttribute('data-rotate-caption');
 
+        $classes = $node->getAttribute('class');
+        $classes = (strlen($classes) > 0) ? explode(' ', $classes) : [];
         // If one of the allowed alignments, add the corresponding class.
         if (in_array($rotate, ['left', 'right'])) {
-          $classes = $node->getAttribute('class');
-          $classes = (strlen($classes) > 0) ? explode(' ', $classes) : [];
           $classes[] = 'rotate-' . $rotate;
 
           if (!empty($rotate_caption)) {
@@ -54,11 +54,11 @@ class FilterRotate extends FilterBase {
           if (!empty($context['data-entity-embed-display-settings']['image_style'])) {
             $classes[] = 'image-style--' . str_replace('_', '-', $context['data-entity-embed-display-settings']['image_style']);
           }
-          $node->setAttribute('class', implode(' ', $classes));
         }
         else {
           $classes[] = 'not-rotated';
         }
+        $node->setAttribute('class', implode(' ', $classes));
 
       }
       $result->setProcessedText(Html::serialize($dom));
