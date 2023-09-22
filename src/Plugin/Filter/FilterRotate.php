@@ -49,14 +49,14 @@ class FilterRotate extends FilterBase {
           else {
             $classes[] = 'caption-not-rotated';
           }
-
-          $context = $this->getNodeAttributesAsArray($node);
-          if (!empty($context['data-entity-embed-display-settings']['image_style'])) {
-            $classes[] = 'image-style--' . str_replace('_', '-', $context['data-entity-embed-display-settings']['image_style']);
-          }
         }
         else {
           $classes[] = 'not-rotated';
+        }
+
+        $context = $this->getNodeAttributesAsArray($node);
+        if (!empty($context['data-entity-embed-display-settings']['image_style'])) {
+          $classes[] = 'image-style--' . str_replace('_', '-', $context['data-entity-embed-display-settings']['image_style']);
         }
         $node->setAttribute('class', implode(' ', $classes));
 
