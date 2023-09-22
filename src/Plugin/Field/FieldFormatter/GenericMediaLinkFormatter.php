@@ -119,6 +119,9 @@ class GenericMediaLinkFormatter extends FileFormatterBase implements ContainerFa
       // TODO: Support entity view display edit form.
       $parent_path = '';
     }
+    else if ($build_info['form_id'] == 'layout_builder_update_block') {
+      $parent_path = 'settings[formatter][settings]';
+    }
 
     // $media = $form_state->get('entity');
 
