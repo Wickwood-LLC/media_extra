@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\Component\Utility\DeprecationHelper;
+use \Drupal\Core\StringTranslation\ByteSizeMarkup;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -153,7 +155,7 @@ function template_preprocess_media_extra_file_link(&$variables) {
   }
 
   if ($variables['options']['file_size']) {
-    $variables['file_size'] = format_size($file->getSize() ?? 0);
+    $variables['file_size'] = DeprecationHelper::backwardsCompatibleCall(\Drupal::VERSION, '10.2.0', fn() => ByteSizeMarkup::create($file->getSize() ?? 0), fn() => format_size($file->getSize() ?? 0));
   }
 
   // Set file classes to the options array.
