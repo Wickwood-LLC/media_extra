@@ -81,7 +81,7 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
    *   The link generator service.
    */
   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, ImageStyleStorageInterface $image_style_storage, FileUrlGeneratorInterface $file_url_generator, RendererInterface $renderer, EntityStorageInterface $responsive_image_style_storage, LinkGeneratorInterface $link_generator) {
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $current_user, $image_style_storage, $renderer);
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $current_user, $image_style_storage, $file_url_generator, $renderer);
     $this->responsiveImageStyleStorage = $responsive_image_style_storage;
     $this->linkGenerator = $link_generator;
   }
