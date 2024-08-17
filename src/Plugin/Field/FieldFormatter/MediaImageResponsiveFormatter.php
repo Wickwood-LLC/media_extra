@@ -16,6 +16,7 @@ use Drupal\Core\Url;
 use Drupal\media\MediaInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
+use Drupal\responsive_image\Entity\ResponsiveImageStyle;
 
 /**
  * Plugin implementation of the 'media_image_responsive' formatter.
@@ -127,6 +128,7 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
     $responsive_image_styles = $this->responsiveImageStyleStorage->loadMultiple();
     if ($responsive_image_styles && !empty($responsive_image_styles)) {
       foreach ($responsive_image_styles as $machine_name => $responsive_image_style) {
+        /** @var \Drupal\responsive_image\Entity\ResponsiveImageStyle $responsive_image_style */
         if ($responsive_image_style->hasImageStyleMappings()) {
           $responsive_image_options[$machine_name] = $responsive_image_style->label();
         }
@@ -216,7 +218,6 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
   public function calculateDependencies() {
     $dependencies = parent::calculateDependencies();
     $style_id = $this->getSetting('image_style');
-    /** @var \Drupal\responsive_image\ResponsiveImageStyleInterface $style */
     if ($style_id && $style = ResponsiveImageStyle::load($style_id)) {
       // Add the responsive image style as dependency.
       $dependencies[$style->getConfigDependencyKey()][] = $style->getConfigDependencyName();
@@ -230,7 +231,6 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
   public function onDependencyRemoval(array $dependencies) {
     $changed = parent::onDependencyRemoval($dependencies);
     $style_id = $this->getSetting('image_style');
-    /** @var\Drupal\responsive_image\ResponsiveImageStyleInterface $style */
     if ($style_id && $style = ResponsiveImageStyle::load($style_id)) {
       if (!empty($dependencies[$style->getConfigDependencyKey()][$style->getConfigDependencyName()])) {
         $replacement_id = $this->imageStyleStorage->getReplacementId($style_id);
