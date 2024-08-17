@@ -14,6 +14,7 @@ use Drupal\media\MediaInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
+use Drupal\Core\Utility\LinkGeneratorInterface;
 use Drupal\Core\Url;
 
 /**
@@ -70,8 +71,8 @@ class StaticImageFormatter extends MediaThumbnailFormatter {
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer service.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, ImageStyleStorageInterface $image_style_storage, FileUrlGeneratorInterface $link_generator, RendererInterface $renderer) {
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $current_user, $image_style_storage, $link_generator, $renderer);
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, ImageStyleStorageInterface $image_style_storage, FileUrlGeneratorInterface $file_url_generator, RendererInterface $renderer, LinkGeneratorInterface $link_generator) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $current_user, $image_style_storage, $file_url_generator, $renderer);
     $this->linkGenerator = $link_generator;
   }
 
@@ -90,7 +91,8 @@ class StaticImageFormatter extends MediaThumbnailFormatter {
       $container->get('current_user'),
       $container->get('entity_type.manager')->getStorage('image_style'),
       $container->get('file_url_generator'),
-      $container->get('renderer')
+      $container->get('renderer'),
+      $container->get('link_generator')
     );
   }
 
