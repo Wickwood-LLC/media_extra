@@ -2,17 +2,21 @@
  * Rotation classes for block level elements (images, videos, blockquotes, etc.)
  */
 .rotate-left.rotate-caption,
+.rotate-left:not(.rotate-caption).embedded-entity,
 .rotate-left:not(.rotate-caption)>.embedded-entity {
   transform: rotate(-7deg);
   shape-margin: 1em;
 }
 
 .rotate-right.rotate-caption,
+.rotate-right:not(.rotate-caption).embedded-entity,
 .rotate-right:not(.rotate-caption)>.embedded-entity {
   transform: rotate(7deg);
   shape-margin: 1em;
 }
 
+.rotate-left:not(.rotate-caption).embedded-entity,
+.rotate-right:not(.rotate-caption).embedded-entity,
 .rotate-left:not(.rotate-caption)>.embedded-entity,
 .rotate-right:not(.rotate-caption)>.embedded-entity {
   margin-bottom: 7%;
