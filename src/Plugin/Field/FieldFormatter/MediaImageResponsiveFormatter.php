@@ -204,10 +204,19 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = parent::viewElements($items, $langcode);
+
+    $media_items = $this->getEntitiesToView($items, $langcode);
     foreach ($elements as $delta => &$element) {
       $element['#theme'] = 'responsive_image_formatter';
       $element['#responsive_image_style_id'] = $element['#image_style'];
       unset($element['#image_style']);
+
+      /** @var MediaInterface $media */
+      $media = $media_items[$delta];
+      $source_field_name = StaticImageFormatter::getMediaImageSourceField($media);
+      if ($source_field_name) {
+        $element['#item'] = $media->get($source_field_name)->first();
+      }
     }
     return $elements;
   }

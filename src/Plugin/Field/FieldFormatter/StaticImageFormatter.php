@@ -16,6 +16,7 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Utility\LinkGeneratorInterface;
 use Drupal\Core\Url;
+use Drupal\image\Plugin\Field\FieldType\ImageItem;
 
 /**
  * Plugin implementation of the 'media_thumbnail' formatter.
@@ -188,6 +189,46 @@ class StaticImageFormatter extends MediaThumbnailFormatter {
       }
     }
     return $url;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function viewElements(FieldItemListInterface $items, $langcode) {
+    $elements = parent::viewElements($items, $langcode);
+
+    $media_items = $this->getEntitiesToView($items, $langcode);
+
+    foreach ($elements as $delta => &$element) {
+      /** @var MediaInterface $media */
+      $media = $media_items[$delta];
+      $source_field_name = static::getMediaImageSourceField($media);
+      if ($source_field_name) {
+        $element['#item'] = $media->get($source_field_name)->first();
+      }
+    }
+
+    return $elements;
+  }
+
+  /**
+   * Get image field from source config.
+   * copy of MediaEmbed::getMediaImageSourceField()
+   *
+   * @param \Drupal\media\MediaInterface $media
+   *   A media entity.
+   *
+   * @return string|null
+   *   String of image field name.
+   */
+  public static function getMediaImageSourceField(MediaInterface $media) {
+    $field_definition = $media->getSource()
+      ->getSourceFieldDefinition($media->bundle->entity);
+    $item_class = $field_definition->getItemDefinition()->getClass();
+    if ($item_class == ImageItem::class || is_subclass_of($item_class, ImageItem::class)) {
+      return $field_definition->getName();
+    }
+    return NULL;
   }
 
 }
