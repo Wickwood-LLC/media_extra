@@ -9,6 +9,7 @@ use Drupal\editor\Entity\Editor;
 use Symfony\Component\Mime\MimeTypes;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Link;
+use Drupal\media\MediaInterface;
 
 /**
  * Implements hook_entity_presave().
@@ -163,4 +164,124 @@ function template_preprocess_media_extra_file_link(&$variables) {
   $variables['attributes']->addClass($classes);
 
   $variables['link'] = Link::fromTextAndUrl($link_text, $url->mergeOptions($options))->toRenderable();
+}
+
+/**
+ * Generate default crop values for give aspect ratio.
+ */
+function media_extra_get_default_crop($image_width, $image_height, ?float $crop_aspect_ratio) {
+  $crop_properties = [];
+  if ($crop_aspect_ratio) {
+    $image_aspect_ratio = $image_width / $image_height;
+    if ($image_aspect_ratio > $crop_aspect_ratio) {
+        $crop_properties['height'] = $image_height;
+        $crop_properties['width'] = $crop_properties['height'] * $crop_aspect_ratio;
+    }
+    else if ($image_aspect_ratio <= $crop_aspect_ratio) {
+        $crop_properties['width']  = $image_width;
+        $crop_properties['height'] = $crop_properties['width'] / $crop_aspect_ratio;
+    }
+
+    // $crop_properties['x'] = ($image_width - $crop_properties['width']) / 2;
+    // $crop_properties['y'] = ($image_height - $crop_properties['height']) / 2;
+  }
+  else {
+    // $crop_properties['x'] = 0;
+    // $crop_properties['y'] = 0;
+    $crop_properties['width'] = $image_width;
+    $crop_properties['height'] = $image_height;
+  }
+  $crop_properties['x'] = round($image_width / 2);
+  $crop_properties['y'] = round($image_height / 2);
+  $crop_properties['width'] = round($crop_properties['width']);
+  $crop_properties['height'] = round($crop_properties['height']);
+  return $crop_properties;
+}
+
+function media_extra_set_crops(EntityInterface $media) {
+  if ($media->bundle() == 'image' && \Drupal::moduleHandler()->moduleExists('image_widget_crop')) {
+    $iwc_manager = Drupal::service('image_widget_crop.manager');
+
+    $crop_type_list = $iwc_manager->getAvailableCropType(\Drupal\crop\Entity\CropType::getCropTypeNames());
+
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityStorage $crop_type_storage */
+    $crop_type_storage = \Drupal::entityTypeManager()
+        ->getStorage('crop_type');
+
+    $crop_storage = \Drupal::entityTypeManager()
+        ->getStorage('crop');
+
+    $crop_types = $crop_type_storage->loadMultiple(array_keys($crop_type_list));
+
+    // $v = \Drupal::service('entity_type.bundle.info')->getBundleInfo('crop');
+
+    $file = $media->get('field_media_image')->entity;
+
+    $uri = $file->getFileUri();
+
+    $image_factory = \Drupal::service('image.factory');
+    $image = $image_factory->get($uri);
+
+    if ($image->isValid()) {
+      $width = $image->getWidth();
+      $height = $image->getHeight();
+
+      foreach ($crop_types as $crop_type) {
+        /** @var \Drupal\crop\Entity\CropType $crop_type */
+        $crop = $crop_storage->loadByProperties([
+          'type' => $crop_type->id(),
+          'uri' => $uri,
+        ]);
+        if (empty($crop)) {
+            $crop_aspect_ratio_value = $crop_type->getAspectRatio();
+            $crop_aspect_ratio;
+            if (!empty($crop_aspect_ratio_value)) {
+                list($ratio_x, $ratio_y) = explode(':', $crop_aspect_ratio_value);
+                $crop_aspect_ratio = $ratio_x / $ratio_y;
+            }
+            $values = media_extra_get_default_crop($width, $height, $crop_aspect_ratio);
+            $values['type'] = $crop_type->id();
+            $values['entity_id'] = $file->fid;
+            $values['entity_type'] = 'file';
+            $values['uri'] = $uri;
+
+            /** @var \Drupal\crop\CropInterface $crop */
+            $crop = $crop_storage->create($values);
+            $crop->save();
+        }
+      }
+    }
+  }
+}
+
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for media
+ */
+function media_extra_entity_insert(EntityInterface $entity) {
+  if ($entity instanceof MediaInterface) {
+    media_extra_set_crops($entity);
+  } 
+}
+
+/**
+ * Implements function hook_ENTITY_TYPE_update() {
+ */
+function media_extra_entity_update(EntityInterface $entity) {
+  if ($entity instanceof MediaInterface) {
+    media_extra_set_crops($entity);
+  } 
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function media_extra_module_implements_alter(&$implementations, $hook) {
+  if ($hook === 'entity_insert' || $hook === 'entity_update') {
+    // Ensure that this module's implementation of hooks runs
+    // last
+    $group = $implementations['media_extra'];
+    unset($implementations['media_extra']);
+    $implementations['media_extra'] = $group;
+  }
 }
