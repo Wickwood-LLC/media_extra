@@ -216,6 +216,10 @@ function media_extra_set_crops(EntityInterface $media) {
     // $v = \Drupal::service('entity_type.bundle.info')->getBundleInfo('crop');
 
     $file = $media->get('field_media_image')->entity;
+    if (!$file) {
+      // No need to proceed as file not existing.
+      return;
+    }
 
     $uri = $file->getFileUri();
 
