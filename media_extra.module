@@ -238,7 +238,7 @@ function media_extra_set_crops(EntityInterface $media) {
         ]);
         if (empty($crop)) {
             $crop_aspect_ratio_value = $crop_type->getAspectRatio();
-            $crop_aspect_ratio;
+            $crop_aspect_ratio = NULL;
             if (!empty($crop_aspect_ratio_value)) {
                 list($ratio_x, $ratio_y) = explode(':', $crop_aspect_ratio_value);
                 $crop_aspect_ratio = $ratio_x / $ratio_y;
