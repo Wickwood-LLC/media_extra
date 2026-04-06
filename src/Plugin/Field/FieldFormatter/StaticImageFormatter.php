@@ -14,6 +14,7 @@ use Drupal\media\MediaInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Utility\LinkGeneratorInterface;
 use Drupal\Core\Url;
 use Drupal\image\Plugin\Field\FieldType\ImageItem;
@@ -199,12 +200,12 @@ class StaticImageFormatter extends MediaThumbnailFormatter {
 
     $media_items = $this->getEntitiesToView($items, $langcode);
 
-    foreach ($elements as $delta => &$element) {
+    foreach (Element::children($elements) as $delta) {
       /** @var MediaInterface $media */
       $media = $media_items[$delta];
       $source_field_name = static::getMediaImageSourceField($media);
       if ($source_field_name) {
-        $element['#item'] = $media->get($source_field_name)->first();
+        $elements[$delta]['#item'] = $media->get($source_field_name)->first();
       }
     }
 
