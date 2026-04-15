@@ -79,7 +79,7 @@ class DynamicLocalTasks extends DeriverBase implements ContainerDeriverInterface
 
       $this->derivatives["entity.media.edit_form_default"] = [
         'route_name' => "entity.media.edit_form",
-        'title' => $this->t('Edit'),
+        'title' => $this->t('Default'),
         'parent_id' => 'media.tasks:entity.media.edit_form',
         'weight' => 1,
       ] + $base_plugin_definition;
