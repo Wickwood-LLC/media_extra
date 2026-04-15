@@ -41,7 +41,9 @@ function media_extra_form_entity_embed_dialog_alter(&$form, FormStateInterface $
     /** @var \Drupal\editor\EditorInterface $editor */
     $editor = $form_state->get('editor');
 
-    if ($editor->getFilterFormat()->filters('me_filter_rotate')->status) {
+    /** @var \Drupal\filter\Plugin\FilterInterface $rotate_filter */
+    $rotate_filter = $editor->getFilterFormat()->filters('me_filter_rotate');
+    if ($rotate_filter->status) {
       $form['attributes']['data-rotate'] = [
         '#title' => t('Rotate'),
         '#type' => 'radios',
@@ -215,6 +217,7 @@ function media_extra_set_crops(EntityInterface $media) {
 
     // $v = \Drupal::service('entity_type.bundle.info')->getBundleInfo('crop');
 
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface $media */
     $file = $media->get('field_media_image')->entity;
     if (!$file) {
       // No need to proceed as file not existing.
