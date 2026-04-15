@@ -5,3 +5,6 @@ entity.media_extra.settings:
     _title: 'Media Extra Settings'
   requirements:
     _permission: 'administer media'
+
+route_callbacks:
+  - '\Drupal\media_extra\Routing\Routes::routes'

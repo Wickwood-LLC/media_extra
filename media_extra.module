@@ -292,3 +292,12 @@ function media_extra_module_implements_alter(&$implementations, $hook) {
     $implementations['media_extra'] = $group;
   }
 }
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function media_extra_entity_type_alter(array &$entity_types) {
+  if (\Drupal::moduleHandler()->moduleExists('media_text_overlay')) {
+    $entity_types['media']->setFormClass("overlay_text_edit", $entity_types['media']->getFormClass('default'));
+  }
+}

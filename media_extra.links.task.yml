@@ -1,0 +1,2 @@
+media_text_overlay.tasks:
+  deriver: 'Drupal\media_extra\Plugin\Derivative\DynamicLocalTasks'
