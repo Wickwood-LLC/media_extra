@@ -4,3 +4,9 @@ base:
     # Adjust the weights to load these early.
     component:
       css/components/rotate.module.css: { weight: -10 }
+image_tester:
+  js:
+    js/image-tester.js: {}
+  css:
+    component:
+     css/image-tester.css: {}

@@ -103,6 +103,9 @@ function media_extra_theme() {
         'icon_position' => NULL,
       ],
     ],
+    'media_extra_image_tester' => [
+      'variables' => [],
+    ],
   ];
 }
 

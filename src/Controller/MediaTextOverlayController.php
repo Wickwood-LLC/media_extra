@@ -53,4 +53,15 @@ class MediaTextOverlayController extends ControllerBase {
     }
     return AccessResult::forbidden();
   }
+
+  public function imageTester(MediaInterface $media) {
+    return [
+      '#theme' => 'media_extra_image_tester',
+      '#attached' => [
+        'library' => [
+          'media_extra/image_tester',
+        ]
+      ]
+    ];
+  }
 }

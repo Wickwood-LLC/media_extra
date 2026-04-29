@@ -32,6 +32,24 @@ class Routes {
         '_admin_route' => TRUE,
       ]
     );
+
+    $routes['media.edit.image_tester'] = new Route(
+      // Path to attach this route to:
+      '/media/{media}/edit/image-tester',
+      // Route defaults:
+      [
+        '_controller' => '\Drupal\media_extra\Controller\MediaTextOverlayController::imageTester',
+      ],
+      // Route requirements:
+      [
+        '_entity_access' => 'media.update',
+        '_custom_access' => '\Drupal\media_extra\Controller\MediaTextOverlayController::hasTextOverlayField',
+      ],
+      [
+        '_admin_route' => TRUE,
+      ]
+    );
+
     return $routes;
   }
 

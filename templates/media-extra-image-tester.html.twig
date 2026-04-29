@@ -1,0 +1,508 @@
+<section class="hero">
+<h1>
+    See exactly how your OG image renders<br />
+    <span class="muted">on Facebook, LinkedIn, X, Slack & iMessage.</span>
+</h1>
+<p class="lede">
+    Drop an image, paste a URL, or use the demo. Toggle safe-area
+    overlays, switch aspect ratios, and watch every platform crop, zoom
+    and letterbox your asset in real time.
+</p>
+</section>
+
+<!-- CONTROL DECK -->
+<section class="deck">
+<div class="deck-grid">
+    <!-- Source -->
+    <div class="panel">
+    <div class="panel-head">
+        <span class="step">01</span>
+        <h2>Source image</h2>
+    </div>
+    <div
+        id="dropzone"
+        class="dropzone"
+        tabindex="0"
+        role="button"
+        aria-label="Upload image"
+    >
+        <svg
+        width="28"
+        height="28"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        >
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+        <polyline points="17 8 12 3 7 8" />
+        <line x1="12" y1="3" x2="12" y2="15" />
+        </svg>
+        <span class="dz-title">Drag & drop</span>
+        <span class="dz-sub">PNG, JPG, WebP — or click to browse</span>
+        <input
+        type="file"
+        id="fileInput"
+        accept="image/*"
+        hidden
+        />
+    </div>
+    <div class="url-row">
+        <input
+        type="url"
+        id="urlInput"
+        placeholder="…or paste image URL"
+        autocomplete="off"
+        />
+        <button id="urlLoadBtn" class="btn">Load</button>
+    </div>
+    <div class="sample-row">
+        <span class="micro-label">Try a sample:</span>
+        <button class="chip" data-sample="gradient">Gradient</button>
+        <button class="chip" data-sample="photo">Photo</button>
+        <button class="chip" data-sample="text">Text-heavy</button>
+    </div>
+    <div class="src-meta" id="srcMeta">
+        <span class="muted">No image loaded</span>
+    </div>
+    </div>
+
+    <!-- Variant -->
+    <div class="panel">
+    <div class="panel-head">
+        <span class="step">02</span>
+        <h2>Aspect variant</h2>
+    </div>
+    <div class="variant-grid" role="radiogroup" aria-label="Aspect variants">
+        <!-- buttons injected by JS -->
+    </div>
+    <div class="variant-meta" id="variantMeta"></div>
+    </div>
+
+    <!-- Overlays -->
+    <div class="panel">
+    <div class="panel-head">
+        <span class="step">03</span>
+        <h2>Overlays</h2>
+    </div>
+    <div class="toggle-list">
+        <label class="toggle">
+        <input type="checkbox" id="tgSafe" checked />
+        <span class="dot" style="--c: var(--ok)"></span>
+        <span>Safe text zone</span>
+        </label>
+        <label class="toggle">
+        <input type="checkbox" id="tgCrop" checked />
+        <span class="dot" style="--c: var(--warn)"></span>
+        <span>Mobile crop danger zones</span>
+        </label>
+        <label class="toggle">
+        <input type="checkbox" id="tgGrid" />
+        <span class="dot" style="--c: var(--accent)"></span>
+        <span>Rule-of-thirds grid</span>
+        </label>
+        <label class="toggle">
+        <input type="checkbox" id="tgCenter" />
+        <span class="dot" style="--c: var(--accent)"></span>
+        <span>Center crosshair</span>
+        </label>
+        <label class="toggle">
+        <input type="checkbox" id="tgLabels" checked />
+        <span class="dot" style="--c: var(--text-muted)"></span>
+        <span>Dimension labels</span>
+        </label>
+    </div>
+    <button id="exportBtn" class="btn primary block">
+        <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        >
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+        <polyline points="7 10 12 15 17 10" />
+        <line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+        Export annotated PNG
+    </button>
+    </div>
+</div>
+</section>
+
+<!-- MASTER CANVAS -->
+<section class="master">
+<div class="section-head">
+    <h2>Master canvas</h2>
+    <span class="micro-label" id="masterDimLabel">—</span>
+</div>
+<div class="master-stage" id="masterStage">
+    <canvas id="masterCanvas" aria-label="Master OG image preview"></canvas>
+</div>
+</section>
+
+<!-- PLATFORM PREVIEWS -->
+<section class="previews">
+<div class="section-head">
+    <h2>Platform previews</h2>
+    <span class="micro-label">
+    Live render with each platform's actual crop behavior
+    </span>
+</div>
+
+<div class="preview-grid">
+    <!-- FACEBOOK -->
+    <article class="preview-card" data-platform="facebook">
+    <header class="pc-head">
+        <div class="pc-platform">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2">
+            <path
+            d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.69.24 2.69.24v2.97h-1.52c-1.49 0-1.96.93-1.96 1.89v2.27h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"
+            />
+        </svg>
+        <span>Facebook</span>
+        </div>
+        <span class="pc-spec" data-fb-spec>Link share · 1.91:1</span>
+    </header>
+    <div class="pc-body fb-body">
+        <div class="fb-post">
+        <div class="fb-meta">
+            <div class="fb-avatar"></div>
+            <div>
+            <div class="fb-name">Your Page</div>
+            <div class="fb-time">2h · 🌐</div>
+            </div>
+        </div>
+        <div class="fb-text">Check out our latest post →</div>
+        <div class="fb-card">
+            <div class="fb-img" data-preview="facebook"></div>
+            <div class="fb-card-body">
+            <div class="fb-domain">YOURSITE.COM</div>
+            <div class="fb-title">
+                Your headline appears here from og:title
+            </div>
+            <div class="fb-desc">
+                Description from og:description meta tag.
+            </div>
+            </div>
+        </div>
+        <div class="fb-actions">
+            <span>👍 Like</span><span>💬 Comment</span><span>↗ Share</span>
+        </div>
+        </div>
+    </div>
+    </article>
+
+    <!-- LINKEDIN -->
+    <article class="preview-card" data-platform="linkedin">
+    <header class="pc-head">
+        <div class="pc-platform">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#0A66C2">
+            <path
+            d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 11-.01-4.13 2.06 2.06 0 01.01 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"
+            />
+        </svg>
+        <span>LinkedIn</span>
+        </div>
+        <span class="pc-spec">Link preview · 1.91:1</span>
+    </header>
+    <div class="pc-body li-body">
+        <div class="li-post">
+        <div class="li-meta">
+            <div class="li-avatar"></div>
+            <div>
+            <div class="li-name">Your Profile</div>
+            <div class="li-title">Founder · Open Graph Co.</div>
+            <div class="li-time">2h · 🌐</div>
+            </div>
+        </div>
+        <div class="li-text">
+            How does your link preview really render? Test it here →
+        </div>
+        <div class="li-card">
+            <div class="li-img" data-preview="linkedin"></div>
+            <div class="li-card-body">
+            <div class="li-title-card">
+                Your headline from og:title
+            </div>
+            <div class="li-domain">yoursite.com</div>
+            </div>
+        </div>
+        <div class="li-actions">
+            <span>👍 React</span><span>💬 Comment</span><span>↗ Repost</span><span>📨 Send</span>
+        </div>
+        </div>
+    </div>
+    </article>
+
+    <!-- X / TWITTER -->
+    <article class="preview-card" data-platform="x">
+    <header class="pc-head">
+        <div class="pc-platform">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path
+            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+            />
+        </svg>
+        <span>X (Twitter)</span>
+        </div>
+        <span class="pc-spec">Summary card large · 16:9</span>
+    </header>
+    <div class="pc-body x-body">
+        <div class="x-post">
+        <div class="x-avatar"></div>
+        <div class="x-content">
+            <div class="x-meta">
+            <span class="x-name">Your Account</span>
+            <span class="x-handle">@yourhandle · 2h</span>
+            </div>
+            <div class="x-text">
+            Just shipped — check the link preview rendering ↓
+            </div>
+            <div class="x-card">
+            <div class="x-img" data-preview="x"></div>
+            <div class="x-card-body">
+                <span class="x-domain">yoursite.com</span>
+                <span class="x-title">
+                Your headline from og:title meta tag
+                </span>
+            </div>
+            </div>
+            <div class="x-actions">
+            <span>💬 24</span><span>🔁 12</span><span>♡ 248</span><span>📊 9.1K</span>
+            </div>
+        </div>
+        </div>
+    </div>
+    </article>
+
+    <!-- SLACK -->
+    <article class="preview-card" data-platform="slack">
+    <header class="pc-head">
+        <div class="pc-platform">
+        <svg width="18" height="18" viewBox="0 0 24 24">
+            <path fill="#E01E5A" d="M5 15a2 2 0 110-4h2v2a2 2 0 01-2 2zm1-6a2 2 0 11-2-2 2 2 0 012 2z"/>
+            <path fill="#36C5F0" d="M9 5a2 2 0 114 0v2H9zm0 1a2 2 0 11-2 2 2 2 0 012-2z"/>
+            <path fill="#2EB67D" d="M19 9a2 2 0 110 4h-2v-2a2 2 0 012-2zm-1 6a2 2 0 112 2 2 2 0 01-2-2z"/>
+            <path fill="#ECB22E" d="M15 19a2 2 0 11-4 0v-2h4zm0-1a2 2 0 112-2 2 2 0 01-2 2z"/>
+        </svg>
+        <span>Slack unfurl</span>
+        </div>
+        <span class="pc-spec">Sidebar thumb · 1.91:1</span>
+    </header>
+    <div class="pc-body slack-body">
+        <div class="sl-msg">
+        <div class="sl-avatar"></div>
+        <div class="sl-content">
+            <div class="sl-meta">
+            <span class="sl-name">you</span>
+            <span class="sl-time">2:48 PM</span>
+            </div>
+            <a class="sl-link" href="#">https://yoursite.com/post</a>
+            <div class="sl-unfurl">
+            <div class="sl-bar"></div>
+            <div class="sl-unfurl-body">
+                <div class="sl-domain">yoursite.com</div>
+                <div class="sl-title">Your headline from og:title</div>
+                <div class="sl-desc">Description from og:description.</div>
+                <div class="sl-img" data-preview="slack"></div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </article>
+
+    <!-- iMessage -->
+    <article class="preview-card" data-platform="imessage">
+    <header class="pc-head">
+        <div class="pc-platform">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#34C759">
+            <path
+            d="M12 2C6.48 2 2 5.92 2 10.75c0 2.74 1.46 5.18 3.74 6.78-.13 1.05-.55 2.5-1.34 3.47-.21.26.03.65.36.55 1.81-.55 4.18-1.59 5.21-2.27.66.13 1.34.2 2.03.2 5.52 0 10-3.92 10-8.75S17.52 2 12 2z"
+            />
+        </svg>
+        <span>iMessage</span>
+        </div>
+        <span class="pc-spec">Rich link · square thumb</span>
+    </header>
+    <div class="pc-body imsg-body">
+        <div class="im-bubble">
+        <div class="im-rich">
+            <div class="im-img" data-preview="imessage"></div>
+            <div class="im-rich-body">
+            <div class="im-title">Your headline from og:title</div>
+            <div class="im-domain">yoursite.com</div>
+            </div>
+        </div>
+        </div>
+        <div class="im-time-stamp">Delivered</div>
+    </div>
+    </article>
+
+    <!-- DISCORD -->
+    <article class="preview-card" data-platform="discord">
+    <header class="pc-head">
+        <div class="pc-platform">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#5865F2">
+            <path
+            d="M20.317 4.37a19.79 19.79 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.74 19.74 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028 14.09 14.09 0 001.226-1.994.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.099.246.198.373.292a.077.077 0 01-.006.127 12.3 12.3 0 01-1.873.892.077.077 0 00-.04.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.84 19.84 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.331c-1.183 0-2.157-1.085-2.157-2.42 0-1.333.956-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.335-.957 2.42-2.157 2.42zm7.974 0c-1.183 0-2.157-1.085-2.157-2.42 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.335-.946 2.42-2.157 2.42z"
+            />
+        </svg>
+        <span>Discord embed</span>
+        </div>
+        <span class="pc-spec">Embed image · variable</span>
+    </header>
+    <div class="pc-body dc-body">
+        <div class="dc-msg">
+        <div class="dc-avatar"></div>
+        <div class="dc-content">
+            <div class="dc-meta">
+            <span class="dc-name">you</span>
+            <span class="dc-time">Today at 2:48 PM</span>
+            </div>
+            <a class="dc-link" href="#">https://yoursite.com/post</a>
+            <div class="dc-embed">
+            <div class="dc-domain">yoursite.com</div>
+            <div class="dc-title">Your headline from og:title</div>
+            <div class="dc-desc">
+                Description from og:description meta.
+            </div>
+            <div class="dc-img" data-preview="discord"></div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </article>
+</div>
+</section>
+
+<!-- SPECS REFERENCE -->
+<section class="specs" id="specs">
+<div class="section-head">
+    <h2>Reference specs</h2>
+    <span class="micro-label">Verified against current platform docs (2025–2026)</span>
+</div>
+<div class="specs-grid">
+    <div class="spec-card">
+    <div class="spec-head">
+        <h3>Facebook</h3>
+        <span class="badge">Link share</span>
+    </div>
+    <dl>
+        <div><dt>Recommended</dt><dd>1200 × 630 px</dd></div>
+        <div><dt>Aspect</dt><dd>1.91 : 1</dd></div>
+        <div><dt>Minimum</dt><dd>600 × 315 px</dd></div>
+        <div><dt>Max file</dt><dd>8 MB</dd></div>
+        <div><dt>Format</dt><dd>JPG, PNG</dd></div>
+        <div><dt>Safe area</dt><dd>Inner 90% — avoid outer 5% on each side</dd></div>
+    </dl>
+    <p class="spec-note">
+        Mobile crops slightly tighter on portrait devices. Center your subject.
+        Source:
+        <a
+        href="https://birdeye.com/blog/facebook-post-size/"
+        target="_blank"
+        rel="noopener"
+        >Birdeye 2026 guide</a
+        >.
+    </p>
+    </div>
+
+    <div class="spec-card">
+    <div class="spec-head">
+        <h3>LinkedIn</h3>
+        <span class="badge">Link preview</span>
+    </div>
+    <dl>
+        <div><dt>Recommended</dt><dd>1200 × 627 px</dd></div>
+        <div><dt>Aspect</dt><dd>1.91 : 1</dd></div>
+        <div><dt>Square option</dt><dd>1200 × 1200 px</dd></div>
+        <div><dt>Max file</dt><dd>5 MB</dd></div>
+        <div><dt>Format</dt><dd>JPG, PNG</dd></div>
+        <div><dt>Safe area</dt><dd>Center 80% — text/logo can crop on mobile</dd></div>
+    </dl>
+    <p class="spec-note">
+        1200×627 is safest for link unfurls; 1200×1200 wins on mobile feed.
+        Source:
+        <a
+        href="https://postline.ai/blog/2/linkedin-share-image-size"
+        target="_blank"
+        rel="noopener"
+        >Postline.ai</a
+        >.
+    </p>
+    </div>
+
+    <div class="spec-card">
+    <div class="spec-head">
+        <h3>X / Twitter</h3>
+        <span class="badge">Summary large</span>
+    </div>
+    <dl>
+        <div><dt>Recommended</dt><dd>1200 × 675 px (16:9)</dd></div>
+        <div><dt>Larger option</dt><dd>1600 × 900 px</dd></div>
+        <div><dt>Square posts</dt><dd>1200 × 1200 px (multi-image)</dd></div>
+        <div><dt>Min display</dt><dd>600 × 335 px</dd></div>
+        <div><dt>Max file</dt><dd>5 MB photos</dd></div>
+        <div><dt>Format</dt><dd>JPG, PNG, WebP, GIF</dd></div>
+    </dl>
+    <p class="spec-note">
+        16:9 expands without cropping in timeline. Source:
+        <a
+        href="https://postfa.st/sizes/x/posts"
+        target="_blank"
+        rel="noopener"
+        >PostFast 2026</a
+        >.
+    </p>
+    </div>
+
+    <div class="spec-card">
+    <div class="spec-head">
+        <h3>Slack & Discord</h3>
+        <span class="badge">Unfurl</span>
+    </div>
+    <dl>
+        <div><dt>Slack thumb</dt><dd>Re-uses og:image; renders ~360px wide</dd></div>
+        <div><dt>Discord embed</dt><dd>Up to ~400px wide, full aspect retained</dd></div>
+        <div><dt>Recommend</dt><dd>1200 × 630 px works for both</dd></div>
+        <div><dt>Max file</dt><dd>≤ 5 MB recommended</dd></div>
+    </dl>
+    <p class="spec-note">
+        Both platforms read standard
+        <code>og:image</code> tags — no separate spec required.
+    </p>
+    </div>
+
+    <div class="spec-card">
+    <div class="spec-head">
+        <h3>iMessage</h3>
+        <span class="badge">Rich link</span>
+    </div>
+    <dl>
+        <div><dt>Thumb shape</dt><dd>Square crop from center</dd></div>
+        <div><dt>Recommend</dt><dd>Provide square or center-safe 1200×630</dd></div>
+        <div><dt>Reads</dt><dd>og:image + apple-touch-icon</dd></div>
+    </dl>
+    <p class="spec-note">
+        Apple's Smart Link card center-crops to a square. Keep the subject
+        dead-center.
+    </p>
+    </div>
+
+    <div class="spec-card">
+    <div class="spec-head">
+        <h3>Required meta tags</h3>
+        <span class="badge">Implementation</span>
+    </div>
+    <pre class="codeblock"><code>&lt;meta property="og:image" content="https://yoursite.com/og.png"&gt;
+&lt;meta property="og:image:width" content="1200"&gt;
+&lt;meta property="og:image:height" content="630"&gt;
+&lt;meta property="og:image:alt" content="Descriptive alt text"&gt;
+&lt;meta name="twitter:card" content="summary_large_image"&gt;
+&lt;meta name="twitter:image" content="https://yoursite.com/og.png"&gt;</code></pre>
+</div>
+</div>
+</section>
