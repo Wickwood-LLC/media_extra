@@ -348,6 +348,13 @@ function template_preprocess_media_extra_image_tester(&$variables) {
     $cache_metadata->addCacheableDependency($image_style);
   }
 
+  if ($use_flattened_image) {
+    $variables['image_styles_sub_heading'] = t('Image styles (flattened with text overlays)');
+  }
+  else {
+    $variables['image_styles_sub_heading'] = t('Image styles');
+  }
+
   $cache_metadata->addCacheableDependency($config);
   $cache_metadata->addCacheableDependency($media);
   $cache_metadata->applyTo($variables);
