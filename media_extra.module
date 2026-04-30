@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Component\Utility\DeprecationHelper;
+use Drupal\Core\Cache\CacheableMetadata;
 use \Drupal\Core\StringTranslation\ByteSizeMarkup;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\ContentEntityBase;
@@ -314,17 +315,9 @@ function template_preprocess_media_extra_image_tester(&$variables) {
   $file_url_generator = \Drupal::service('file_url_generator');
   $variables['image_url'] = $file_url_generator->generateAbsoluteString($variables['image_uri']);
 
-  $image_style_ids = [
-    'feature_image',
-    'social_media_sharing_1000_x_1500_fixed_crop',
-    'social_media_sharing_1000_x_1500_manual_crop',
-    'social_media_sharing_1200_x_630_fixed_crop',
-    'social_media_sharing_1200_x_630_manual_crop',
-  ];
+  $config = \Drupal::config('media_extra.settings');
+  $image_style_ids = $config->get('image_tester_preview_image_styles');
   $image_styles = ImageStyle::loadMultiple($image_style_ids);
-
-  /** @var \Drupal\media_text_overlay_flatten\ImageFlattenService */
-  $flatten_service = \Drupal::service('mot.flatten');
 
   $variables['variants'] = [
     'original' => [
@@ -332,12 +325,28 @@ function template_preprocess_media_extra_image_tester(&$variables) {
       'image_url' => $variables['image_url'],
     ],
   ];
+  $use_flattened_image = false;
+  if (\Drupal::moduleHandler()->moduleExists('media_text_overlay')) {
+    $use_flattened_image = $config->get('image_tester_preview_use_flattened_image');
+    /** @var \Drupal\media_text_overlay_flatten\ImageFlattenService */
+    $flatten_service = \Drupal::service('mot.flatten');
+  }
   foreach ($image_styles as $image_style) {
+    if ($use_flattened_image) {
+      $image_url = $flatten_service->flattenMediaImageUrl($media, 'field_text_overlay', $image_style->id(), 0, ['absolute' => TRUE]);
+    }
+    else {
+      $image_url = $image_style->buildUrl($variables['image_uri']);
+    }
     $variables['variants'][$image_style->id()] = [
       'label' => $image_style->label(),
-      // 'image_url' => $file_url_generator->generateAbsoluteString($image_style->buildUri($variables['image_uri'])),
-      'image_url' => $flatten_service->flattenMediaImageUrl($media, 'field_text_overlay', $image_style->id(), 0, ['absolute' => TRUE]),
+      'image_url' => $image_url,
     ];
   }
+
+  $cache_metadata = CacheableMetadata::createFromRenderArray($variables);
+  $cache_metadata->addCacheableDependency($config);
+  $cache_metadata->addCacheableDependency($media);
+  $cache_metadata->applyTo($variables);
 }
 
