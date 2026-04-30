@@ -336,7 +336,7 @@ function template_preprocess_media_extra_image_tester(&$variables) {
     $variables['variants'][$image_style->id()] = [
       'label' => $image_style->label(),
       // 'image_url' => $file_url_generator->generateAbsoluteString($image_style->buildUri($variables['image_uri'])),
-      'image_url' => $flatten_service->flattenMediaImageUrl($media, 'field_text_overlay', $image_style->id()),
+      'image_url' => $flatten_service->flattenMediaImageUrl($media, 'field_text_overlay', $image_style->id(), 0, ['absolute' => TRUE]),
     ];
   }
 }
