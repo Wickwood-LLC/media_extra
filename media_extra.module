@@ -328,14 +328,15 @@ function template_preprocess_media_extra_image_tester(&$variables) {
     ],
   ];
   $use_flattened_image = false;
-  if (\Drupal::moduleHandler()->moduleExists('media_text_overlay')) {
+  $overlay_text_field = null;
+  if (\Drupal::moduleHandler()->moduleExists('media_text_overlay') && $overlay_text_field = media_text_overlay_get_text_overlay_field($media)) {
     $use_flattened_image = $config->get('image_tester_preview_use_flattened_image');
     /** @var \Drupal\media_text_overlay_flatten\ImageFlattenService */
     $flatten_service = \Drupal::service('mot.flatten');
   }
   foreach ($image_styles as $image_style) {
     if ($use_flattened_image) {
-      $image_url = $flatten_service->flattenMediaImageUrl($media, 'field_text_overlay', $image_style->id(), 0, ['absolute' => TRUE]);
+      $image_url = $flatten_service->flattenMediaImageUrl($media, $overlay_text_field, $image_style->id(), 0, ['absolute' => TRUE]);
     }
     else {
       $image_url = $image_style->buildUrl($variables['image_uri']);
