@@ -311,6 +311,8 @@ function media_extra_entity_type_alter(array &$entity_types) {
 }
 
 function template_preprocess_media_extra_image_tester(&$variables) {
+  $cache_metadata = CacheableMetadata::createFromRenderArray($variables);
+
   $media = $variables['media'];
   $file_url_generator = \Drupal::service('file_url_generator');
   $variables['image_url'] = $file_url_generator->generateAbsoluteString($variables['image_uri']);
@@ -342,9 +344,9 @@ function template_preprocess_media_extra_image_tester(&$variables) {
       'label' => $image_style->label(),
       'image_url' => $image_url,
     ];
+    $cache_metadata->addCacheableDependency($image_style);
   }
 
-  $cache_metadata = CacheableMetadata::createFromRenderArray($variables);
   $cache_metadata->addCacheableDependency($config);
   $cache_metadata->addCacheableDependency($media);
   $cache_metadata->applyTo($variables);
