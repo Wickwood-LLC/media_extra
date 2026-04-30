@@ -43,7 +43,7 @@ class MediaTextOverlayController extends ControllerBase {
   }
 
   public function hasTextOverlayField(MediaInterface $media) {
-    if ($this->moduleHandler->moduleExists('media_text_overlay') && media_text_overlay_entity_has_text_overlay_field($media)) {
+    if ($this->moduleHandler->moduleExists('media_text_overlay') && media_text_overlay_get_text_overlay_field($media)) {
       return AccessResult::allowed();
     }
     return AccessResult::forbidden();
