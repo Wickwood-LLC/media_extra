@@ -112,6 +112,26 @@ class SettingsForm extends ConfigFormBase {
       );
     }
 
+    $form['image_tester_preview_image_styles'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Image tester preview image styles'),
+      '#options' => image_style_options(),
+      '#default_value' => $config->get('image_tester_preview_image_styles') ?: [],
+      '#empty_option' => $this->t('- Select image styles -'),
+      '#multiple' => TRUE,
+      '#description' => $this->t('Select the image styles you wish to use with the OG Image tester preview.'),
+    ];
+
+    if (\Drupal::moduleHandler()->moduleExists('media_text_overlay')) {
+      $form['image_tester_preview_use_flattened_image'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Use flattened image for image tester preview'),
+        '#default_value' => $config->get('image_tester_preview_use_flattened_image'),
+        '#description' => $this->t('If checked the image tester preview will use the flattened image with text overlay if available.'),
+      ];
+    }
+
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -123,12 +143,18 @@ class SettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Retrieve the configuration
-     $this->configFactory->getEditable(static::SETTINGS)
+    $config = $this->configFactory->getEditable(static::SETTINGS)
     // Set the submitted editor CSS setting
     ->set('allowed_image_styles_for_static_image', $form_state->getValue('allowed_image_styles_for_static_image'))
     ->set('allowed_image_styles_for_responsive_image', $form_state->getValue('allowed_image_styles_for_responsive_image'))
     ->set('linkit_profile', $form_state->getValue('linkit_profile'))
-    ->save();
+    ->set('image_tester_preview_image_styles', $form_state->getValue('image_tester_preview_image_styles'));
+
+    if (\Drupal::moduleHandler()->moduleExists('media_text_overlay')) {
+      $config->set('image_tester_preview_use_flattened_image', $form_state->getValue('image_tester_preview_use_flattened_image'));
+    }
+
+    $config->save();
 
     parent::submitForm($form, $form_state);
   }

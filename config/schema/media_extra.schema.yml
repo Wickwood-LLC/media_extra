@@ -15,6 +15,14 @@ media_extra.settings:
     linkit_profile:
       type: string
       label: 'Linkit profile'
+    image_tester_preview_image_styles:
+      type: sequence
+      label: 'Image tester preview image styles'
+      sequence:
+        type: string
+    image_tester_preview_use_flattened_image:
+      type: boolean
+      label: 'Image tester preview use flattened image'
 
 field.formatter.settings.static_image:
   type: field.formatter.settings.media_thumbnail
