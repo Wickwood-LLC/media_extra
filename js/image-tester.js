@@ -30,56 +30,56 @@
 // })();
 
 // ------- Variants -------
-const VARIANTS = [
-  {
-    id: 'og-standard',
-    name: 'OG Standard',
-    w: 1200,
-    h: 630,
-    ratio: '1.91:1',
-    note: 'The universal Open Graph default. Works for Facebook, LinkedIn link previews, Slack and Discord unfurls.',
-  },
-  {
-    id: 'square',
-    name: 'Square',
-    w: 1200,
-    h: 1200,
-    ratio: '1:1',
-    note: 'Strong on LinkedIn mobile feed and Instagram. Will be center-cropped to 1.91:1 on link unfurls.',
-  },
-  {
-    id: 'twitter-16-9',
-    name: 'X / 16:9',
-    w: 1200,
-    h: 675,
-    ratio: '16:9',
-    note: 'Recommended for X (Twitter) summary_large_image cards. Slightly shorter than OG standard.',
-  },
-  {
-    id: 'twitter-hires',
-    name: 'X HD 16:9',
-    w: 1600,
-    h: 900,
-    ratio: '16:9',
-    note: 'Higher-res 16:9 for X — ideal when image carries fine detail or text.',
-  },
-  {
-    id: 'portrait',
-    name: 'Portrait',
-    w: 1080,
-    h: 1350,
-    ratio: '4:5',
-    note: 'Mobile-first. Strong on Instagram & LinkedIn vertical posts. Most platforms will crop top/bottom on link previews.',
-  },
-  {
-    id: 'banner',
-    name: 'X Header',
-    w: 1500,
-    h: 500,
-    ratio: '3:1',
-    note: 'X profile header / Twitter Spaces cover. Not for link previews.',
-  },
-];
+// const VARIANTS = [
+//   {
+//     id: 'og-standard',
+//     name: 'OG Standard',
+//     w: 1200,
+//     h: 630,
+//     ratio: '1.91:1',
+//     note: 'The universal Open Graph default. Works for Facebook, LinkedIn link previews, Slack and Discord unfurls.',
+//   },
+//   {
+//     id: 'square',
+//     name: 'Square',
+//     w: 1200,
+//     h: 1200,
+//     ratio: '1:1',
+//     note: 'Strong on LinkedIn mobile feed and Instagram. Will be center-cropped to 1.91:1 on link unfurls.',
+//   },
+//   {
+//     id: 'twitter-16-9',
+//     name: 'X / 16:9',
+//     w: 1200,
+//     h: 675,
+//     ratio: '16:9',
+//     note: 'Recommended for X (Twitter) summary_large_image cards. Slightly shorter than OG standard.',
+//   },
+//   {
+//     id: 'twitter-hires',
+//     name: 'X HD 16:9',
+//     w: 1600,
+//     h: 900,
+//     ratio: '16:9',
+//     note: 'Higher-res 16:9 for X — ideal when image carries fine detail or text.',
+//   },
+//   {
+//     id: 'portrait',
+//     name: 'Portrait',
+//     w: 1080,
+//     h: 1350,
+//     ratio: '4:5',
+//     note: 'Mobile-first. Strong on Instagram & LinkedIn vertical posts. Most platforms will crop top/bottom on link previews.',
+//   },
+//   {
+//     id: 'banner',
+//     name: 'X Header',
+//     w: 1500,
+//     h: 500,
+//     ratio: '3:1',
+//     note: 'X profile header / Twitter Spaces cover. Not for link previews.',
+//   },
+// ];
 
 // Platform crop behavior — describes the crop applied when an image
 // in the source variant is rendered into the platform's preview slot.
@@ -119,46 +119,48 @@ const state = {
   imageLabel: null,
 };
 
+let activeVariantItem = null;
 // ------- Variant UI -------
-function renderVariantButtons() {
-  variantGrid.innerHTML = '';
-  VARIANTS.forEach((v) => {
-    const btn = document.createElement('button');
-    btn.className = 'variant-btn';
-    btn.type = 'button';
-    btn.setAttribute('aria-pressed', state.variantId === v.id ? 'true' : 'false');
-    btn.dataset.id = v.id;
-    // Compute shape proportions (capped to a small icon area)
-    const maxSide = 56;
-    const ratio = v.w / v.h;
-    let sw, sh;
-    if (ratio >= 1) {
-      sw = maxSide;
-      sh = Math.max(14, Math.round(maxSide / ratio));
-    } else {
-      sh = maxSide;
-      sw = Math.max(14, Math.round(maxSide * ratio));
-    }
-    btn.innerHTML = `
-      <span class="vb-shape" style="width:${sw}px;height:${sh}px"></span>
-      <span class="vb-label">
-        <span class="vb-name">${v.name}</span>
-        <span class="vb-dim">${v.w}×${v.h} · ${v.ratio}</span>
-      </span>
-    `;
-    btn.addEventListener('click', () => {
-      state.variantId = v.id;
-      renderVariantButtons();
-      rerenderAll();
-    });
-    variantGrid.appendChild(btn);
-  });
-  const v = activeVariant();
-  variantMeta.textContent = v.note;
-}
+// function renderVariantButtons() {
+//   // variantGrid.innerHTML = '';
+//   VARIANTS.forEach((v) => {
+//     const btn = document.createElement('button');
+//     btn.className = 'variant-btn';
+//     btn.type = 'button';
+//     btn.setAttribute('aria-pressed', state.variantId === v.id ? 'true' : 'false');
+//     btn.dataset.id = v.id;
+//     // Compute shape proportions (capped to a small icon area)
+//     const maxSide = 56;
+//     const ratio = v.w / v.h;
+//     let sw, sh;
+//     if (ratio >= 1) {
+//       sw = maxSide;
+//       sh = Math.max(14, Math.round(maxSide / ratio));
+//     } else {
+//       sh = maxSide;
+//       sw = Math.max(14, Math.round(maxSide * ratio));
+//     }
+//     btn.innerHTML = `
+//       <span class="vb-shape" style="width:${sw}px;height:${sh}px"></span>
+//       <span class="vb-label">
+//         <span class="vb-name">${v.name}</span>
+//         <span class="vb-dim">${v.w}×${v.h} · ${v.ratio}</span>
+//       </span>
+//     `;
+//     btn.addEventListener('click', () => {
+//       state.variantId = v.id;
+//       // renderVariantButtons();
+//       rerenderAll();
+//     });
+//     // variantGrid.appendChild(btn);
+//   });
+//   const v = activeVariant();
+//   // variantMeta.textContent = v.note;
+// }
 
 function activeVariant() {
-  return VARIANTS.find((x) => x.id === state.variantId) || VARIANTS[0];
+  // return VARIANTS.find((x) => x.id === state.variantId) || VARIANTS[0];
+  return activeVariantItem;
 }
 
 // ------- Sample images (programmatic, no external assets) -------
@@ -259,36 +261,36 @@ function makeSampleCanvas(kind, w = 1600, h = 1600) {
   return c;
 }
 
-function loadSample(kind) {
-  const c = makeSampleCanvas(kind);
-  const img = new Image();
-  img.onload = () => {
-    state.image = img;
-    state.imageLabel = `sample · ${kind} · ${c.width}×${c.height}`;
-    onImageReady();
-  };
-  img.src = c.toDataURL('image/png');
-}
+// function loadSample(kind) {
+//   const c = makeSampleCanvas(kind);
+//   const img = new Image();
+//   img.onload = () => {
+//     state.image = img;
+//     state.imageLabel = `sample · ${kind} · ${c.width}×${c.height}`;
+//     onImageReady();
+//   };
+//   img.src = c.toDataURL('image/png');
+// }
 
 // ------- Image loading -------
-function loadFile(file) {
-  if (!file || !file.type.startsWith('image/')) {
-    flashSrcMeta('Not an image file.', true);
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const img = new Image();
-    img.onload = () => {
-      state.image = img;
-      state.imageLabel = `${file.name} · ${img.naturalWidth}×${img.naturalHeight}`;
-      onImageReady();
-    };
-    img.onerror = () => flashSrcMeta('Could not decode image.', true);
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
+// function loadFile(file) {
+//   if (!file || !file.type.startsWith('image/')) {
+//     flashSrcMeta('Not an image file.', true);
+//     return;
+//   }
+//   const reader = new FileReader();
+//   reader.onload = (e) => {
+//     const img = new Image();
+//     img.onload = () => {
+//       state.image = img;
+//       state.imageLabel = `${file.name} · ${img.naturalWidth}×${img.naturalHeight}`;
+//       onImageReady();
+//     };
+//     img.onerror = () => flashSrcMeta('Could not decode image.', true);
+//     img.src = e.target.result;
+//   };
+//   reader.readAsDataURL(file);
+// }
 
 function loadUrl(url) {
   if (!url) return;
@@ -298,6 +300,10 @@ function loadUrl(url) {
     state.image = img;
     const short = url.length > 50 ? url.slice(0, 47) + '…' : url;
     state.imageLabel = `${short} · ${img.naturalWidth}×${img.naturalHeight}`;
+    activeVariantItem = {
+      w: img.width,
+      h: img.height,
+    };
     onImageReady();
   };
   img.onerror = () => {
@@ -349,7 +355,7 @@ function renderMaster() {
     labels: tgLabels.checked,
   });
 
-  masterDimLabel.textContent = `${v.name} · ${v.w} × ${v.h} px · ${v.ratio}`;
+  masterDimLabel.textContent = `${v.w} × ${v.h} px · ${getRatio(v.w, v.h)}`;
 }
 
 // Draws the variant onto a 2D context covering [0,0,w,h].
@@ -609,7 +615,7 @@ function drawDimLabel(ctx, w, h, v) {
   ctx.font = '600 11px JetBrains Mono, monospace';
   ctx.textAlign = 'right';
   ctx.textBaseline = 'bottom';
-  const lbl = ` ${v.w} × ${v.h} · ${v.ratio} `;
+  const lbl = ` ${v.w} × ${v.h} · ${getRatio(v.w, v.h)} `;
   const m = ctx.measureText(lbl);
   ctx.fillRect(w - m.width - 8, h - 22, m.width + 4, 18);
   ctx.fillStyle = '#fff';
@@ -744,47 +750,47 @@ function rerenderAll() {
 
 // ------- Wiring -------
 function wire() {
-  // Drag & drop
-  ['dragenter', 'dragover'].forEach((ev) =>
-    dropzone.addEventListener(ev, (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      dropzone.classList.add('dragging');
-    }),
-  );
-  ['dragleave', 'drop'].forEach((ev) =>
-    dropzone.addEventListener(ev, (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      dropzone.classList.remove('dragging');
-    }),
-  );
-  dropzone.addEventListener('drop', (e) => {
-    const file = e.dataTransfer?.files?.[0];
-    if (file) loadFile(file);
-  });
-  dropzone.addEventListener('click', () => fileInput.click());
-  dropzone.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      fileInput.click();
-    }
-  });
-  fileInput.addEventListener('change', (e) => {
-    const f = e.target.files?.[0];
-    if (f) loadFile(f);
-  });
+  // // Drag & drop
+  // ['dragenter', 'dragover'].forEach((ev) =>
+  //   dropzone.addEventListener(ev, (e) => {
+  //     e.preventDefault();
+  //     e.stopPropagation();
+  //     dropzone.classList.add('dragging');
+  //   }),
+  // );
+  // ['dragleave', 'drop'].forEach((ev) =>
+  //   dropzone.addEventListener(ev, (e) => {
+  //     e.preventDefault();
+  //     e.stopPropagation();
+  //     dropzone.classList.remove('dragging');
+  //   }),
+  // );
+  // dropzone.addEventListener('drop', (e) => {
+  //   const file = e.dataTransfer?.files?.[0];
+  //   if (file) loadFile(file);
+  // });
+  // dropzone.addEventListener('click', () => fileInput.click());
+  // dropzone.addEventListener('keydown', (e) => {
+  //   if (e.key === 'Enter' || e.key === ' ') {
+  //     e.preventDefault();
+  //     fileInput.click();
+  //   }
+  // });
+  // fileInput.addEventListener('change', (e) => {
+  //   const f = e.target.files?.[0];
+  //   if (f) loadFile(f);
+  // });
 
-  // URL
-  urlLoadBtn.addEventListener('click', () => loadUrl(urlInput.value.trim()));
-  urlInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') loadUrl(urlInput.value.trim());
-  });
+  // // URL
+  // urlLoadBtn.addEventListener('click', () => loadUrl(urlInput.value.trim()));
+  // urlInput.addEventListener('keydown', (e) => {
+  //   if (e.key === 'Enter') loadUrl(urlInput.value.trim());
+  // });
 
-  // Samples
-  document.querySelectorAll('.chip[data-sample]').forEach((b) =>
-    b.addEventListener('click', () => loadSample(b.dataset.sample)),
-  );
+  // // Samples
+  // document.querySelectorAll('.chip[data-sample]').forEach((b) =>
+  //   b.addEventListener('click', () => loadSample(b.dataset.sample)),
+  // );
 
   // Toggles
   [tgSafe, tgCrop, tgGrid, tgCenter, tgLabels].forEach((el) =>
@@ -802,7 +808,32 @@ function wire() {
   });
 }
 
+const getRatio = (width, height) => {
+  // Helper function to find the Greatest Common Divisor
+  const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
+  
+  const commonFactor = gcd(width, height);
+  
+  return `${width / commonFactor}:${height / commonFactor}`;
+};
+
 // ------- Init -------
-renderVariantButtons();
+// renderVariantButtons();
 wire();
-loadSample('gradient'); // start with a demo so previews aren't empty
+// loadSample('gradient'); // start with a demo so previews aren't empty
+// loadUrl(urlInput.value.trim());
+
+const variantButtons = document.querySelectorAll('.variant-grid .variant-btn');
+
+if (variantButtons.length > 0) {
+  variantButtons.item(0).setAttribute('aria-pressed', 'true');
+  loadUrl(variantButtons.item(0).getAttribute('data-image-url'));
+}
+
+variantButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    variantButtons.forEach((btn) => btn.setAttribute('aria-pressed', 'false'));
+    button.setAttribute('aria-pressed', 'true');
+    loadUrl(button.getAttribute('data-image-url'));
+  });
+});

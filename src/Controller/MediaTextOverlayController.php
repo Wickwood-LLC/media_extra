@@ -5,6 +5,7 @@ namespace Drupal\media_extra\Controller;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\file\Entity\File;
 use Drupal\media\MediaInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -55,8 +56,14 @@ class MediaTextOverlayController extends ControllerBase {
   }
 
   public function imageTester(MediaInterface $media) {
+    $fid = $media->getSource()->getSourceFieldValue($media);
+    /** @var File */
+    $file = File::load($fid);
+    // $absolute_url = 
     return [
       '#theme' => 'media_extra_image_tester',
+      '#media' => $media,
+      '#image_uri' => $file->getFileUri(),
       '#attached' => [
         'library' => [
           'media_extra/image_tester',

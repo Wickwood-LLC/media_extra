@@ -454,7 +454,7 @@ main {
   background: color-mix(in oklab, var(--color-primary) 8%, var(--color-surface-2));
   box-shadow: 0 0 0 1px var(--color-primary);
 }
-.vb-shape {
+/* .vb-shape {
   background: var(--color-surface-offset);
   border: 1px solid var(--color-border);
   border-radius: 3px;
@@ -465,7 +465,7 @@ main {
 .variant-btn[aria-pressed='true'] .vb-shape {
   background: color-mix(in oklab, var(--color-primary) 30%, transparent);
   border-color: var(--color-primary);
-}
+} */
 .vb-label {
   display: flex;
   flex-direction: column;

@@ -9,6 +9,7 @@ use Drupal\editor\Entity\Editor;
 use Symfony\Component\Mime\MimeTypes;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Link;
+use Drupal\image\Entity\ImageStyle;
 use Drupal\media\MediaInterface;
 
 /**
@@ -104,7 +105,10 @@ function media_extra_theme() {
       ],
     ],
     'media_extra_image_tester' => [
-      'variables' => [],
+      'variables' => [
+        'media' => NULL,
+        'image_uri' => NULL,
+      ],
     ],
   ];
 }
@@ -304,3 +308,36 @@ function media_extra_entity_type_alter(array &$entity_types) {
     $entity_types['media']->setFormClass("overlay_text_edit", $entity_types['media']->getFormClass('default'));
   }
 }
+
+function template_preprocess_media_extra_image_tester(&$variables) {
+  $media = $variables['media'];
+  $file_url_generator = \Drupal::service('file_url_generator');
+  $variables['image_url'] = $file_url_generator->generateAbsoluteString($variables['image_uri']);
+
+  $image_style_ids = [
+    'feature_image',
+    'social_media_sharing_1000_x_1500_fixed_crop',
+    'social_media_sharing_1000_x_1500_manual_crop',
+    'social_media_sharing_1200_x_630_fixed_crop',
+    'social_media_sharing_1200_x_630_manual_crop',
+  ];
+  $image_styles = ImageStyle::loadMultiple($image_style_ids);
+
+  /** @var \Drupal\media_text_overlay_flatten\ImageFlattenService */
+  $flatten_service = \Drupal::service('mot.flatten');
+
+  $variables['variants'] = [
+    'original' => [
+      'label' => t('Original'),
+      'image_url' => $variables['image_url'],
+    ],
+  ];
+  foreach ($image_styles as $image_style) {
+    $variables['variants'][$image_style->id()] = [
+      'label' => $image_style->label(),
+      // 'image_url' => $file_url_generator->generateAbsoluteString($image_style->buildUri($variables['image_uri'])),
+      'image_url' => $flatten_service->flattenMediaImageUrl($media, 'field_text_overlay', $image_style->id()),
+    ];
+  }
+}
+
