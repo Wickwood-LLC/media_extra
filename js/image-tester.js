@@ -110,7 +110,7 @@ const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('fileInput');
 const urlInput = document.getElementById('urlInput');
 const urlLoadBtn = document.getElementById('urlLoadBtn');
-const exportBtn = document.getElementById('exportBtn');
+// const exportBtn = document.getElementById('exportBtn');
 
 // ------- State -------
 const state = {
@@ -702,44 +702,44 @@ function makeVariantCanvas(v) {
 }
 
 // ------- Export -------
-function exportAnnotated() {
-  const v = activeVariant();
-  // Render at full variant resolution (cap to 2000 longest)
-  const longest = 2000;
-  const ratio = v.w / v.h;
-  let w, h;
-  if (ratio >= 1) {
-    w = Math.min(longest, v.w);
-    h = w / ratio;
-  } else {
-    h = Math.min(longest, v.h);
-    w = h * ratio;
-  }
-  const c = document.createElement('canvas');
-  c.width = Math.round(w);
-  c.height = Math.round(h);
-  const ctx = c.getContext('2d');
-  drawVariant(ctx, c.width, c.height, v, {
-    safe: tgSafe.checked,
-    crop: tgCrop.checked,
-    grid: tgGrid.checked,
-    center: tgCenter.checked,
-    labels: tgLabels.checked,
-  });
-  c.toBlob(
-    (blob) => {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `og-${v.id}-${v.w}x${v.h}.png`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-    },
-    'image/png',
-  );
-}
+// function exportAnnotated() {
+//   const v = activeVariant();
+//   // Render at full variant resolution (cap to 2000 longest)
+//   const longest = 2000;
+//   const ratio = v.w / v.h;
+//   let w, h;
+//   if (ratio >= 1) {
+//     w = Math.min(longest, v.w);
+//     h = w / ratio;
+//   } else {
+//     h = Math.min(longest, v.h);
+//     w = h * ratio;
+//   }
+//   const c = document.createElement('canvas');
+//   c.width = Math.round(w);
+//   c.height = Math.round(h);
+//   const ctx = c.getContext('2d');
+//   drawVariant(ctx, c.width, c.height, v, {
+//     safe: tgSafe.checked,
+//     crop: tgCrop.checked,
+//     grid: tgGrid.checked,
+//     center: tgCenter.checked,
+//     labels: tgLabels.checked,
+//   });
+//   c.toBlob(
+//     (blob) => {
+//       const url = URL.createObjectURL(blob);
+//       const a = document.createElement('a');
+//       a.href = url;
+//       a.download = `og-${v.id}-${v.w}x${v.h}.png`;
+//       document.body.appendChild(a);
+//       a.click();
+//       a.remove();
+//       setTimeout(() => URL.revokeObjectURL(url), 1000);
+//     },
+//     'image/png',
+//   );
+// }
 
 // ------- Render orchestration -------
 function rerenderAll() {
@@ -798,7 +798,7 @@ function wire() {
   );
 
   // Export
-  exportBtn.addEventListener('click', exportAnnotated);
+  // exportBtn.addEventListener('click', exportAnnotated);
 
   // Resize
   let rTimer = null;
