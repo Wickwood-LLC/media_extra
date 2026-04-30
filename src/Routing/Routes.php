@@ -35,7 +35,7 @@ class Routes {
 
     $routes['media.edit.image_tester'] = new Route(
       // Path to attach this route to:
-      '/media/{media}/edit/image-tester',
+      '/media/{media}/edit/og-image-tester',
       // Route defaults:
       [
         '_controller' => '\Drupal\media_extra\Controller\MediaTextOverlayController::imageTester',
