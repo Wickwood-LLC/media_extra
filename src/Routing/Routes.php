@@ -29,7 +29,7 @@ class Routes {
         '_custom_access' => '\Drupal\media_extra\Controller\MediaTextOverlayController::hasTextOverlayField',
       ],
       [
-        '_admin_route' => TRUE,
+        // '_admin_route' => TRUE,
       ]
     );
 
