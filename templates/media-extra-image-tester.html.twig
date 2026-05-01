@@ -384,6 +384,7 @@
 </div>
 </section>
 
+{% if user.hasPermission('see og image tester reference specs') %}
 <!-- SPECS REFERENCE -->
 <section class="specs" id="specs">
 <div class="section-head">
@@ -512,3 +513,4 @@
 </div>
 </div>
 </section>
+{% endif %}
