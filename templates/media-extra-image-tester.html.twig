@@ -3,11 +3,6 @@
     See exactly how your OG image renders<br />
     <span class="muted">on Facebook, LinkedIn, X, Slack & iMessage.</span>
 </h1>
-<p class="lede">
-    Drop an image, paste a URL, or use the demo. Toggle safe-area
-    overlays, switch aspect ratios, and watch every platform crop, zoom
-    and letterbox your asset in real time.
-</p>
 </section>
 
 <!-- CONTROL DECK -->
@@ -92,27 +87,27 @@
         <h2>{{ 'Overlays'|t }}</h2>
     </div>
     <div class="toggle-list">
-        <label class="toggle">
+        <label class="toggle" title="You should keep all important text and graphics so they won’t be cropped, cut off, or covered by interface elements" >
         <input type="checkbox" id="tgSafe" checked />
         <span class="dot" style="--c: var(--ok)"></span>
         <span>Safe text zone</span>
         </label>
-        <label class="toggle">
+        <label class="toggle" title="Your design or image that are likely to be cropped out, cut off, or covered by UI elements on different mobile screens or platforms">
         <input type="checkbox" id="tgCrop" checked />
         <span class="dot" style="--c: var(--warn)"></span>
         <span>Mobile crop danger zones</span>
         </label>
-        <label class="toggle">
+        <label class="toggle" title="The Rule-of-thirds grid is a composition guideline that divides an image into nine equal parts using two horizontal and two vertical lines (like a tic-tac-toe board), helping you place key elements for a more balanced and engaging visual. Position your main subject or focal point at one of the four intersection points where the lines cross, align horizons along a horizontal line (top or bottom third) instead of the center, place people's eyes at an intersection in portraits, and line up tall objects along vertical lines—this creates energy, movement, and better use of negative space compared to centering subjects.">
         <input type="checkbox" id="tgGrid" />
         <span class="dot" style="--c: var(--accent)"></span>
         <span>Rule-of-thirds grid</span>
         </label>
-        <label class="toggle">
+        <label class="toggle" title="Show a crosshair in the center of the image preview to understand the center point of the image.">
         <input type="checkbox" id="tgCenter" />
         <span class="dot" style="--c: var(--accent)"></span>
         <span>Center crosshair</span>
         </label>
-        <label class="toggle">
+        <label class="toggle" title="Show dimension labels">
         <input type="checkbox" id="tgLabels" checked />
         <span class="dot" style="--c: var(--text-muted)"></span>
         <span>Dimension labels</span>
