@@ -20,6 +20,12 @@ media_extra.settings:
       label: 'Image tester preview image styles'
       sequence:
         type: string
+    image_tester_preview_image_style_default:
+      type: string
+      label: 'Image tester preview image style default'
+    image_tester_preview_include_original:
+      type: boolean
+      label: 'Allow previewing original image'
     image_tester_preview_use_flattened_image:
       type: boolean
       label: 'Image tester preview use flattened image'

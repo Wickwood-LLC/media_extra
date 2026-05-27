@@ -319,14 +319,10 @@ function template_preprocess_media_extra_image_tester(&$variables) {
 
   $config = \Drupal::config('media_extra.settings');
   $image_style_ids = $config->get('image_tester_preview_image_styles');
+  $default_image_style_id = $config->get('image_tester_preview_image_style_default');
+  $image_style_ids = array_diff($image_style_ids, [$default_image_style_id]);
   $image_styles = ImageStyle::loadMultiple($image_style_ids);
 
-  $variables['variants'] = [
-    'original' => [
-      'label' => t('Original'),
-      'image_url' => $variables['image_url'],
-    ],
-  ];
   $use_flattened_image = false;
   $overlay_text_field = null;
   if (\Drupal::moduleHandler()->moduleExists('media_text_overlay') && $overlay_text_field = media_text_overlay_get_text_overlay_field($media)) {
@@ -334,17 +330,37 @@ function template_preprocess_media_extra_image_tester(&$variables) {
     /** @var \Drupal\media_text_overlay_flatten\ImageFlattenService */
     $flatten_service = \Drupal::service('mot.flatten');
   }
-  foreach ($image_styles as $image_style) {
-    if ($use_flattened_image) {
-      $image_url = $flatten_service->flattenMediaImageUrl($media, $overlay_text_field, $image_style->id(), 0, ['absolute' => TRUE]);
-    }
-    else {
-      $image_url = $image_style->buildUrl($variables['image_uri']);
-    }
-    $variables['variants'][$image_style->id()] = [
-      'label' => $image_style->label(),
-      'image_url' => $image_url,
+
+  $variables['variants'] = [];
+  if ($default_image_style_id) {
+    $default_image_style = ImageStyle::load($default_image_style_id);
+    $variables['variants'][$default_image_style->id()] = _media_extra_generate_image_tester_variant_item(
+      $media,
+      $overlay_text_field,
+      $default_image_style,
+      $use_flattened_image,
+      $variables['image_uri'],
+      $flatten_service
+    );
+  }
+
+  if ($config->get('image_tester_preview_include_original')) {
+    $variables['variants']['original'] = [
+      'label' => t('Original'),
+      'image_url' => $variables['image_url'],
     ];
+  }
+
+
+  foreach ($image_styles as $image_style) {
+    $variables['variants'][$image_style->id()] = _media_extra_generate_image_tester_variant_item(
+      $media,
+      $overlay_text_field,
+      $image_style,
+      $use_flattened_image,
+      $variables['image_uri'],
+      $flatten_service
+    );
     $cache_metadata->addCacheableDependency($image_style);
   }
 
@@ -358,5 +374,19 @@ function template_preprocess_media_extra_image_tester(&$variables) {
   $cache_metadata->addCacheableDependency($config);
   $cache_metadata->addCacheableDependency($media);
   $cache_metadata->applyTo($variables);
+}
+
+function _media_extra_generate_image_tester_variant_item($media, $overlay_text_field, ImageStyle $image_style, bool $use_flattened_image, ?string $image_uri, $flatten_service = NULL) {
+  if ($use_flattened_image) {
+    /** @var \Drupal\media_text_overlay_flatten\ImageFlattenService $flatten_service */
+    $image_url = $flatten_service->flattenMediaImageUrl($media, $overlay_text_field, $image_style->id(), 0, ['absolute' => TRUE]);
+  }
+  else {
+    $image_url = $image_style->buildUrl($image_uri);
+  }
+  return [
+    'label' => $image_style->label(),
+    'image_url' => $image_url,
+  ];
 }
 
