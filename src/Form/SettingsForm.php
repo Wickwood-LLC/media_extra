@@ -112,18 +112,40 @@ class SettingsForm extends ConfigFormBase {
       );
     }
 
-    $form['image_tester_preview_image_styles'] = [
+    $form['image_tester_preview'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Image tester preview'),
+      '#open' => TRUE,
+    ];
+
+    $form['image_tester_preview']['image_tester_preview_image_styles'] = [
       '#type' => 'select',
-      '#title' => $this->t('Image tester preview image styles'),
+      '#title' => $this->t('Image styles'),
       '#options' => image_style_options(),
       '#default_value' => $config->get('image_tester_preview_image_styles') ?: [],
-      '#empty_option' => $this->t('- Select image styles -'),
+      '#empty_option' => $this->t('- Select image styles -'), 
       '#multiple' => TRUE,
       '#description' => $this->t('Select the image styles you wish to use with the OG Image tester preview.'),
     ];
 
+    $form['image_tester_preview']['image_tester_preview_image_style_default'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Default image style'),
+      '#options' => image_style_options(),
+      '#default_value' => $config->get('image_tester_preview_image_style_default'),
+      '#empty_option' => $this->t('- Select image styles -'),
+      '#description' => $this->t('Select the image styles you wish to use with the OG Image tester preview.'),
+    ];
+
+    $form['image_tester_preview']['image_tester_preview_include_original'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Include option to preview original image'),
+      '#default_value' => $config->get('image_tester_preview_include_original'),
+      '#description' => $this->t('If checked the image tester preview will include an option to preview the original image.'),
+    ];
+
     if (\Drupal::moduleHandler()->moduleExists('media_text_overlay')) {
-      $form['image_tester_preview_use_flattened_image'] = [
+      $form['image_tester_preview']['image_tester_preview_use_flattened_image'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Use flattened image for image tester preview'),
         '#default_value' => $config->get('image_tester_preview_use_flattened_image'),
@@ -148,7 +170,9 @@ class SettingsForm extends ConfigFormBase {
     ->set('allowed_image_styles_for_static_image', $form_state->getValue('allowed_image_styles_for_static_image'))
     ->set('allowed_image_styles_for_responsive_image', $form_state->getValue('allowed_image_styles_for_responsive_image'))
     ->set('linkit_profile', $form_state->getValue('linkit_profile'))
-    ->set('image_tester_preview_image_styles', $form_state->getValue('image_tester_preview_image_styles'));
+    ->set('image_tester_preview_image_styles', $form_state->getValue('image_tester_preview_image_styles'))
+    ->set('image_tester_preview_image_style_default', $form_state->getValue('image_tester_preview_image_style_default'))
+    ->set('image_tester_preview_include_original', $form_state->getValue('image_tester_preview_include_original'));
 
     if (\Drupal::moduleHandler()->moduleExists('media_text_overlay')) {
       $config->set('image_tester_preview_use_flattened_image', $form_state->getValue('image_tester_preview_use_flattened_image'));
