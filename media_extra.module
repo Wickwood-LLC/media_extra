@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\file\IconMimeTypes;
 use Drupal\Component\Utility\DeprecationHelper;
 use Drupal\Core\Cache\CacheableMetadata;
 use \Drupal\Core\StringTranslation\ByteSizeMarkup;
@@ -153,7 +154,7 @@ function template_preprocess_media_extra_file_link(&$variables) {
     // Add a specific class for each and every mime type.
     $classes[] = 'file--mime-' . strtr($mime_type, ['/' => '-', '.' => '-']);
     // Add a more general class for groups of well known MIME types.
-    $classes[] = 'file--' . file_icon_class($mime_type);
+    $classes[] = 'file--' . IconMimeTypes::getIconClass($mime_type);
   }
 
   // Use the description as the link text if available.
