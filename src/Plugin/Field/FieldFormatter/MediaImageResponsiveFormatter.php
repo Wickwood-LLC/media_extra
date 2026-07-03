@@ -17,6 +17,7 @@ use Drupal\media\MediaInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\responsive_image\Entity\ResponsiveImageStyle;
+use Drupal\image\ImageDerivativeUtilities;
 
 /**
  * Plugin implementation of the 'media_image_responsive' formatter.
@@ -30,13 +31,6 @@ use Drupal\responsive_image\Entity\ResponsiveImageStyle;
  * )
  */
 class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
-
-  /**
-   * The renderer service.
-   *
-   * @var \Drupal\Core\Render\RendererInterface
-   */
-  protected $renderer;
 
   /**
    * @var \Drupal\Core\Entity\EntityStorageInterface
@@ -80,8 +74,8 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
    * @param \Drupal\Core\Utility\LinkGeneratorInterface $link_generator
    *   The link generator service.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, ImageStyleStorageInterface $image_style_storage, FileUrlGeneratorInterface $file_url_generator, RendererInterface $renderer, EntityStorageInterface $responsive_image_style_storage, LinkGeneratorInterface $link_generator) {
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $current_user, $image_style_storage, $file_url_generator, $renderer);
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, ImageStyleStorageInterface $image_style_storage, FileUrlGeneratorInterface $file_url_generator, RendererInterface $renderer, protected ImageDerivativeUtilities $imageDerivativeUtilities, EntityStorageInterface $responsive_image_style_storage, LinkGeneratorInterface $link_generator) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $current_user, $image_style_storage, $file_url_generator, $renderer, $imageDerivativeUtilities);
     $this->responsiveImageStyleStorage = $responsive_image_style_storage;
     $this->linkGenerator = $link_generator;
   }
@@ -102,6 +96,7 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
       $container->get('entity_type.manager')->getStorage('image_style'),
       $container->get('file_url_generator'),
       $container->get('renderer'),
+      $container->get(ImageDerivativeUtilities::class),
       $container->get('entity_type.manager')->getStorage('responsive_image_style'),
       $container->get('link_generator')
     );
