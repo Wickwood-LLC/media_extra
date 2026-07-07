@@ -107,7 +107,10 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
    */
   public static function defaultSettings() {
     return [
+      // This is legacy setting and replaced by linkit_uri.
+      // It needs to be removed after a long time once all linkit value has transferred to linkit_uri
       'linkit' => '',
+      'linkit_uri' => '',
     ] + parent::defaultSettings();
   }
 
@@ -145,10 +148,10 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
     unset($element['image_link']);
 
     if (\Drupal::service('module_handler')->moduleExists('linkit')) {
-      $element['linkit'] = [
+      $element['linkit_uri'] = [
         '#title' => $this->t('Link'),
         '#type' => 'linkit',
-        '#default_value' => $this->getSetting('linkit'),
+        '#default_value' => $this->getLinkitValue(),
         '#description' => $this->t('Start typing to find content or paste a URL.'),
         '#autocomplete_route_name' => 'linkit.autocomplete',
         '#autocomplete_route_parameters' => [
@@ -256,7 +259,7 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
   protected function getMediaThumbnailUrl(MediaInterface $media, EntityInterface $entity) {
     $url = NULL;
     if (\Drupal::service('module_handler')->moduleExists('linkit')) {
-      $href = $this->getSetting('linkit');
+      $href = $this->getLinkitValue();
       if (!empty($href)) {
         try {
           $url = Url::fromUserInput($href);
@@ -267,6 +270,16 @@ class MediaImageResponsiveFormatter extends MediaThumbnailFormatter {
       }
     }
     return $url;
+  }
+
+  protected function getLinkitValue() {
+    $old_linkit_value = $this->getSetting('linkit');
+    $linkit_value = $this->getSetting('linkit_uri');
+
+    if (empty($linkit_value) && !empty($old_linkit_value)) {
+      $linkit_value = $old_linkit_value;
+    }
+    return $linkit_value;
   }
 
 }
